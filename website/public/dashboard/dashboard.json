@@ -1,0 +1,412 @@
+{
+  "stats": {
+    "inbox": 18,
+    "approved": 2
+  },
+  "review_queue": [
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Disease investigation in a New Zealand high-health pig herd reveals a divergent porcine adenovirus",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.751650v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "The coculture of Fomitopsis betulina with Escherichia coli induces a nutritional stress and triggers secondary metabolism pathways.",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.751415v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Temperature-dependent reprogramming of virulence traits during Pseudomonas aeruginosa biofilm formation",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.16.751985v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Variation in multiple classes of simple sequence repeats can alter drug susceptibility in Mycobacterium tuberculosis",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.16.752248v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Reduced DPP4 Binding Confers Resistance to Soluble DPP4 While Preserving MERS-CoV Entry into Cells Expressing High Levels of DPP4",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.751648v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Convergent genetic evolution within Burkholderia multivorans chronic infections correlates with lung function decline in cystic fibrosis patients",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.16.751994v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Varied influence of curli on Shiga toxin-producing Escherichia coli O157, O26, O111 biofilm formation and animal cell adherence.",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.15.751941v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Peptidyl Protease Inhibitors Block ERM-BP Function and Suppress Entamoeba Encystation",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.16.752027v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Bacterial secreted products selectively inhibit non-symbiotic fungi in bees",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.16.752052v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Microbiology",
+      "title": "Development of a novel loop-mediated isothermal amplification (LAMP) assay for Balamuthia mandrillaris",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.18.752794v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "BRIDGE-AD reveals Alzheimer's disease effectors through interpretable large-scale omics integration",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.750802v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "Scaling Functional Annotation Across Proteomes, Pangenomes and Metagenomes with Sma3s v3",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.748778v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "high",
+      "score": 120,
+      "recommended_collection": "TNEW",
+      "profile_matches": [
+        {
+          "name": "Metagenomics",
+          "score": 90
+        },
+        {
+          "name": "Tool Intelligence",
+          "score": 30
+        }
+      ],
+      "matched_terms": [
+        {
+          "term": "annotation",
+          "score": 60,
+          "profiles": [
+            "Tool Intelligence",
+            "Metagenomics"
+          ]
+        },
+        {
+          "term": "metagenome",
+          "score": 60,
+          "profiles": [
+            "Metagenomics"
+          ]
+        }
+      ],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "Somatic haplotype reconstruction and variant recalibration from tumor-only long-read sequencing",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.751225v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "Multi-model biological and sequence information fusion for gene regulatory network inference from single-cell transcriptomics",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.13.751326v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "Time-Series Foundation Models for Cognitive Workload Classification using Eye-Tracking Data",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.13.751282v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "BGC Atlas v2: biosynthetic gene clusters with taxonomic and environmental context at scale",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.751540v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "Interrogating contrastive learning embeddings for structure-based virtual screening: a case study on DrugCLIP",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.16.752029v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "review",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "EM3DFold: accurate de novo protein and nucleic acid model building for cryo-EM maps using language model-powered deep learning",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.16.752067v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": null,
+      "priority": "medium",
+      "score": 40,
+      "recommended_collection": "TNEW",
+      "profile_matches": [
+        {
+          "name": "Tool Intelligence",
+          "score": 40
+        }
+      ],
+      "matched_terms": [
+        {
+          "term": "deep learning",
+          "score": 40,
+          "profiles": [
+            "Tool Intelligence"
+          ]
+        }
+      ],
+      "founder_decision": "pending",
+      "summary": null,
+      "why_it_matters": null
+    }
+  ],
+  "approved_objects": [
+    {
+      "status": "approved",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "QBayMic: Quantum-coupled variational Bayes for clustering and feature selection in low-signal microbiome data",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.14.751634v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": "EMV-GENERAL2609-0003",
+      "priority": "low",
+      "score": 0,
+      "recommended_collection": "GENERAL",
+      "profile_matches": [],
+      "matched_terms": [],
+      "founder_decision": "approve",
+      "summary": null,
+      "why_it_matters": null
+    },
+    {
+      "status": "approved",
+      "collection": "bioRxiv Bioinformatics",
+      "title": "DeepVir: A reproducible workflow for large-scale viral dark matter discovery",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.09.15.751837v1?rss=1",
+      "published": null,
+      "type": "preprint",
+      "emv_id": "EMV-TPHAGE2609-0002",
+      "priority": "high",
+      "score": 100,
+      "recommended_collection": "TPHAGE",
+      "profile_matches": [
+        {
+          "name": "Phage Core",
+          "score": 60
+        },
+        {
+          "name": "Tool Intelligence",
+          "score": 40
+        }
+      ],
+      "matched_terms": [
+        {
+          "term": "viral dark matter",
+          "score": 60,
+          "profiles": [
+            "Phage Core"
+          ]
+        },
+        {
+          "term": "workflow",
+          "score": 40,
+          "profiles": [
+            "Tool Intelligence"
+          ]
+        }
+      ],
+      "founder_decision": "approve",
+      "summary": null,
+      "why_it_matters": null
+    }
+  ]
+}

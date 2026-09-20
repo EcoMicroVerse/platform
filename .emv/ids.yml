@@ -1,0 +1,20 @@
+version: 1
+
+prefixes:
+
+  article: EMV-A
+  release: EMV-R
+  scientist: EMV-S
+  tool: EMV-T
+  conference: EMV-C
+  job: EMV-J
+  news: EMV-N
+
+format:
+  year_month: YYMM
+  sequence: "0001"
+
+examples:
+  article: EMV-A2509-0001
+  release: EMV-R2509-0001
+  scientist: EMV-S0001

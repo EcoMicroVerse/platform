@@ -1,0 +1,39 @@
+version: 1
+
+collections:
+
+  - id: phagescope
+    name: PhageScope
+    description: Bacteriophages and phage biology.
+
+  - id: prophage-atlas
+    name: Prophage Atlas
+    description: Prophage discovery and host interactions.
+
+  - id: tool-forge
+    name: Tool Forge
+    description: Bioinformatics tools and pipelines.
+
+  - id: weekly-pulse
+    name: Weekly Pulse
+    description: Weekly research digest.
+
+  - id: methanohub
+    name: MethanoHub
+    description: Methane cycling and microbial ecology.
+
+  - id: nobel-archive
+    name: Nobel Archive
+    description: Nobel Prize stories.
+
+  - id: scientist-spotlight
+    name: Scientist Spotlight
+    description: Profiles of influential researchers.
+
+  - id: conference-watch
+    name: Conference Watch
+    description: Conferences and meetings.
+
+  - id: career-hub
+    name: Career Hub
+    description: Jobs and opportunities.

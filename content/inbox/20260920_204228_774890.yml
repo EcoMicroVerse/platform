@@ -1,0 +1,29 @@
+status: review
+collection: bioRxiv Bioinformatics
+title: Scaling Functional Annotation Across Proteomes, Pangenomes and Metagenomes
+  with Sma3s v3
+link: https://www.biorxiv.org/content/10.64898/2026.09.14.748778v1?rss=1
+published: null
+type: preprint
+emv_id: null
+priority: high
+score: 120
+recommended_collection: TNEW
+profile_matches:
+- name: Metagenomics
+  score: 90
+- name: Tool Intelligence
+  score: 30
+matched_terms:
+- term: annotation
+  score: 60
+  profiles:
+  - Tool Intelligence
+  - Metagenomics
+- term: metagenome
+  score: 60
+  profiles:
+  - Metagenomics
+founder_decision: pending
+summary: null
+why_it_matters: null

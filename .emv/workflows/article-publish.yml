@@ -1,0 +1,13 @@
+pipeline:
+
+  draft:
+    - summarize
+    - classify
+    - assign_id
+
+  review:
+    - founder_review
+
+  publish:
+    - website
+    - social

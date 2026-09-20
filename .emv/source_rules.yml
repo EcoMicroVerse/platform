@@ -1,0 +1,56 @@
+scan_rules:
+
+  journal:
+    frequency: weekly
+    max_articles: 20
+
+  preprint:
+    frequency: weekly
+    max_articles: 15
+
+  github:
+    frequency: weekly
+    releases_only: true
+
+  conference:
+    frequency: weekly
+
+  jobs:
+    frequency: weekly
+
+filters:
+
+  language: English
+
+keywords:
+
+  core_topics:
+    - bacteriophage
+    - phage
+    - prophage
+    - viral ecology
+    - temperate phage
+    - lysogeny
+
+  tool_terms:
+    - pipeline
+    - software
+    - workflow
+    - algorithm
+    - classifier
+    - predictor
+    - detector
+    - annotation
+    - benchmark
+    - comparison
+
+  analysis_methods:
+    - metagenome
+    - metatranscriptome
+    - virome
+    - MAG
+    - host prediction
+    - CRISPR
+    - prophage induction
+    - machine learning
+    - deep learning

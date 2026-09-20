@@ -1,0 +1,37 @@
+version: 1
+
+collections:
+
+  PHAGE:
+    name: "Phage Core"
+    primary_profiles:
+      - Phage Core
+
+  TNEW:
+    name: "Tool Intelligence"
+    primary_profiles:
+      - Tool Intelligence
+
+  TPHAGE:
+    name: "Phage Tools"
+    primary_profiles:
+      - Phage Core
+      - Tool Intelligence
+
+  META:
+    name: "Metagenomics"
+
+  ECO:
+    name: "Microbial Ecology"
+
+  METH:
+    name: "Methane Cycle"
+
+  CONF:
+    name: "Conference Watch"
+
+  JOB:
+    name: "Career Watch"
+
+  GENERAL:
+    name: "General Research"

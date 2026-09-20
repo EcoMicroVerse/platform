@@ -1,0 +1,4 @@
+timestamp,title,decision,priority,profiles
+2026-09-20T20:23:49.354530,DeepVir,approve,high,Phage Core; Tool Intelligence
+2026-09-20T20:46:19.600869,DeepVir: A reproducible workflow for large-scale viral dark matter discovery,approve,high,Phage Core; Tool Intelligence
+2026-09-20T20:46:55.541777,QBayMic: Quantum-coupled variational Bayes for clustering and feature selection in low-signal microbiome data,approve,low,

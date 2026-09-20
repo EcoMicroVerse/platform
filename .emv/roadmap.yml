@@ -1,0 +1,18 @@
+current_release: EMV-R2509-0.4
+
+roadmap:
+
+  - release: EMV-R2509-0.5
+    title: Founder Command Center
+
+  - release: EMV-R2510-0.6
+    title: Weekly Pulse Automation
+
+  - release: EMV-R2510-0.7
+    title: Research Memory Engine
+
+  - release: EMV-R2511-0.8
+    title: PDF Intelligence
+
+  - release: EMV-R2601-1.0
+    title: Public Launch

@@ -1,0 +1,10 @@
+schedule: weekly
+
+steps:
+
+  - scan_sources
+  - summarize_articles
+  - assign_emv_id
+  - categorize
+  - update_memory
+  - prepare_social_posts

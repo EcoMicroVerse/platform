@@ -1,0 +1,133 @@
+version: 1
+
+default_scan_frequency: weekly
+
+collections:
+
+  phagescope:
+
+    - name: Nature Microbiology
+      url: https://www.nature.com/nmicrobiol/
+      type: journal
+      access: website
+      rss: false
+      trust: 5
+
+    - name: ISME Journal
+      url: https://www.nature.com/ismej/
+      type: journal
+      access: website
+      rss: false
+      trust: 5
+
+    - name: Viruses (MDPI)
+      url: https://www.mdpi.com/rss/journal/viruses
+      type: journal
+      access: rss
+      trust: 4
+
+    - name: bioRxiv Microbiology
+      url: https://connect.biorxiv.org/biorxiv_xml.php?subject=microbiology
+      type: preprint
+      access: rss
+      trust: 4
+
+  prophage-atlas:
+
+    - name: PHASTER
+      url: https://phaster.ca/
+      type: tool
+      access: website
+      trust: 5
+
+    - name: PHASTEST
+      url: https://phastest.ca/
+      type: tool
+      access: website
+      trust: 5
+
+    - name: VirSorter2
+      url: https://github.com/jiarong/VirSorter2
+      type: github
+      access: github_api
+      trust: 5
+
+    - name: VIBRANT
+      url: https://github.com/AnantharamanLab/VIBRANT
+      type: github
+      access: github_api
+      trust: 5
+
+  tool-forge:
+
+  - name: Nature Biotechnology
+    url: https://www.nature.com/nbt/
+    type: journal
+    access: website
+    trust: 5
+
+  - name: Bioinformatics (Oxford)
+    url: https://academic.oup.com/bioinformatics
+    type: journal
+    access: website
+    trust: 5
+
+  - name: Genome Biology
+    url: https://genomebiology.biomedcentral.com/
+    type: journal
+    access: website
+    trust: 5
+
+  - name: Nucleic Acids Research
+    url: https://academic.oup.com/nar
+    type: journal
+    access: website
+    trust: 5
+
+  - name: bioRxiv Bioinformatics
+    url: https://connect.biorxiv.org/biorxiv_xml.php?subject=bioinformatics
+    type: preprint
+    access: rss
+    trust: 4
+
+  methanohub:
+
+    - name: Applied and Environmental Microbiology
+      url: https://journals.asm.org/journal/aem
+      type: journal
+      access: website
+      trust: 5
+
+    - name: Environmental Microbiology
+      url: https://sfamjournals.onlinelibrary.wiley.com/journal/14622920
+      type: journal
+      access: website
+      trust: 5
+
+  conference-watch:
+
+    - name: ISME
+      url: https://www.isme-microbes.org/
+      type: conference
+
+    - name: ASM Microbe
+      url: https://asm.org/events
+      type: conference
+
+    - name: EMBL
+      url: https://www.embl.org/events/
+      type: conference
+
+  career-hub:
+
+    - name: Nature Careers
+      url: https://www.nature.com/naturecareers
+      type: jobs
+
+    - name: FindAPostDoc
+      url: https://www.findapostdoc.com/
+      type: jobs
+
+    - name: Euraxess
+      url: https://euraxess.ec.europa.eu/jobs
+      type: jobs

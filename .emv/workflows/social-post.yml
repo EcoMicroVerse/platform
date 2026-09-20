@@ -1,0 +1,9 @@
+platforms:
+
+  - x
+  - bluesky
+  - linkedin
+  - threads
+  - youtube
+
+status: manual_approval

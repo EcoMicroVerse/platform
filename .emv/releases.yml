@@ -1,0 +1,16 @@
+releases:
+
+  - id: EMV-R2509-0.1
+    title: Infrastructure Complete
+
+  - id: EMV-R2509-0.2
+    title: Founder Landing Page
+
+  - id: EMV-R2509-0.2.1
+    title: Landing Page Polish
+
+  - id: EMV-R2509-0.3
+    title: Design System
+
+  - id: EMV-R2509-0.4
+    title: Founder Workspace

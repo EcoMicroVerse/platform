@@ -1,0 +1,25 @@
+version: 1.0
+
+created: "2026-09-20"
+
+collections:
+  phage:
+    count: 0
+
+  prophage:
+    count: 0
+
+  tools:
+    count: 0
+
+  metagenomics:
+    count: 0
+
+  microbial_ecology:
+    count: 0
+
+statistics:
+  discovered: 0
+  approved: 0
+  published: 0
+  rejected: 0

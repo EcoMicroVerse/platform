@@ -1,0 +1,92 @@
+
+version: 2
+
+default_profile: phage_core
+
+profiles:
+
+  phage_core:
+    enabled: true
+    priority: 1
+    name: "Phage Core"
+
+    keywords:
+      bacteriophage: 100
+      phage: 90
+      prophage: 100
+      lysogeny: 90
+      temperate phage: 90
+      viral host prediction: 80
+      phage-host: 80
+      viral dark matter: 60
+      virus-host: 70
+
+  tool_intelligence:
+    enabled: true
+    priority: 2
+    name: "Tool Intelligence"
+
+    keywords:
+      workflow: 40
+      software: 40
+      pipeline: 40
+      algorithm: 50
+      benchmark: 60
+      comparison: 60
+      annotation: 30
+      classifier: 50
+      predictor: 50
+      detector: 50
+      deep learning: 40
+      machine learning: 40
+
+  microbial_ecology:
+    enabled: true
+    priority: 3
+    name: "Microbial Ecology"
+
+    keywords:
+      microbial ecology: 60
+      freshwater: 50
+      lake: 40
+      sediment: 40
+      virome: 50
+      microbial community: 40
+
+  methane_cycle:
+    enabled: true
+    priority: 4
+    name: "Methane Cycle"
+
+    keywords:
+      methanotroph: 100
+      methane oxidation: 80
+      pmoA: 80
+      mmoX: 80
+      Methylococcaceae: 70
+
+  metagenomics:
+    enabled: true
+    priority: 5
+    name: "Metagenomics"
+
+    keywords:
+      metagenome: 60
+      metatranscriptome: 60
+      MAG: 50
+      assembly: 40
+      binning: 40
+      virome: 40
+      annotation: 30
+
+  conference_watch:
+    enabled: true
+    priority: 6
+    name: "Conference Watch"
+    keywords: {}
+
+  career_watch:
+    enabled: true
+    priority: 7
+    name: "Career Watch"
+    keywords: {}

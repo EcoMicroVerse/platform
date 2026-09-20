@@ -1,4 +1,3 @@
-
 export const social = {
   x: "https://x.com/Ecomicroverse",
   bluesky: "https://bsky.app/profile/ecomicroverse.bsky.social",

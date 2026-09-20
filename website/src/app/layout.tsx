@@ -2,8 +2,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ecomicroverse.bio"),
+
   title: "EcoMicroVerse | Connecting Microbial Knowledge",
+
   description:
     "An AI-powered research intelligence platform for bacteriophages, microbial ecology, methane-oxidising bacteria, metagenomics and bioinformatics.",
 

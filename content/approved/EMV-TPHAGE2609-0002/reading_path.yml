@@ -1,0 +1,30 @@
+paper: EMV-TPHAGE2609-0002
+search_terms:
+- DeepVir
+- reproducible
+- workflow
+- large-scale
+- viral
+- dark
+- matter
+- discovery
+- viral dark matter
+- Phage Core
+- Tool Intelligence
+citation_trail:
+  landmark: null
+  current: 'DeepVir: A reproducible workflow for large-scale viral dark matter discovery'
+  follow_up: null
+family_tree:
+  parents: []
+  siblings: []
+  children: []
+recommended:
+- category: Related
+  title: Virome Analysis
+  year: 2025
+  doi: https://doi.org/10.1007/978-1-0716-5009-7_14
+  citations: 0
+  relevance_score: 20.0
+  openalex: https://openalex.org/W4416981612
+  why_read_next: This paper shares themes such as viral dark matter, workflow.

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ecomicroverse.bio"),
   title: "EcoMicroVerse | Connecting Microbial Knowledge",
   description:
-    "An AI-powered research intelligence platform for bacteriophages, microbial ecology, metagenomics, metatranscriptomics and bioinformatics.",
+    "A research intelligence platform for research on bacteriophages, microbial ecology, metagenomics, metatranscriptomics and bioinformatics.",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="bg-[#07121f] text-white">
         {children}
       </body>

@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "EMV-GENERAL2609-0003",
+      "type": "paper",
+      "title": "QBayMic: Quantum-coupled variational Bayes for clustering and feature selection in low-signal microbiome data"
+    },
+    {
+      "id": "GENERAL",
+      "type": "collection",
+      "title": "GENERAL"
+    },
+    {
+      "id": "EMV-TPHAGE2609-0002",
+      "type": "paper",
+      "title": "DeepVir: A reproducible workflow for large-scale viral dark matter discovery"
+    },
+    {
+      "id": "TPHAGE",
+      "type": "collection",
+      "title": "TPHAGE"
+    },
+    {
+      "id": "Phage Core",
+      "type": "profile",
+      "title": "Phage Core"
+    },
+    {
+      "id": "Tool Intelligence",
+      "type": "profile",
+      "title": "Tool Intelligence"
+    },
+    {
+      "id": "viral dark matter",
+      "type": "method",
+      "title": "viral dark matter"
+    },
+    {
+      "id": "workflow",
+      "type": "method",
+      "title": "workflow"
+    }
+  ],
+  "edges": [
+    {
+      "from": "EMV-GENERAL2609-0003",
+      "to": "GENERAL",
+      "type": "belongs_to"
+    },
+    {
+      "from": "EMV-TPHAGE2609-0002",
+      "to": "TPHAGE",
+      "type": "belongs_to"
+    },
+    {
+      "from": "EMV-TPHAGE2609-0002",
+      "to": "Phage Core",
+      "type": "tagged_with"
+    },
+    {
+      "from": "EMV-TPHAGE2609-0002",
+      "to": "Tool Intelligence",
+      "type": "tagged_with"
+    },
+    {
+      "from": "EMV-TPHAGE2609-0002",
+      "to": "viral dark matter",
+      "type": "uses"
+    },
+    {
+      "from": "EMV-TPHAGE2609-0002",
+      "to": "workflow",
+      "type": "uses"
+    }
+  ]
+}

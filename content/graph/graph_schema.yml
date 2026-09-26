@@ -1,0 +1,50 @@
+version: 1
+
+node_types:
+
+  paper:
+    icon: article
+
+  tool:
+    icon: wrench
+
+  organism:
+    icon: dna
+
+  environment:
+    icon: leaf
+
+  method:
+    icon: microscope
+
+  collection:
+    icon: folder
+
+  profile:
+    icon: brain
+
+edge_types:
+
+  belongs_to:
+    from: paper
+    to: collection
+
+  tagged_with:
+    from: paper
+    to: profile
+
+  studies:
+    from: paper
+    to: organism
+
+  uses:
+    from: paper
+    to: method
+
+  applies_to:
+    from: method
+    to: environment
+
+  related_to:
+    from: paper
+    to: paper

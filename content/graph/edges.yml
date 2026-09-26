@@ -1,0 +1,32 @@
+
+- source: deepvir
+  target: viral-dark-matter
+  relation: discovers
+
+- source: deepvir
+  target: metagenomics
+  relation: uses
+
+- source: metagenomics
+  target: viral-discovery
+  relation: enables
+
+- source: tphage
+  target: deepvir
+  relation: features
+
+- source: viral-discovery
+  target: bacteriophage
+  relation: identifies
+
+- source: prophage
+  target: bacteriophage
+  relation: lifecycle-stage
+
+- source: hmmer
+  target: viral-discovery
+  relation: supports
+
+- source: microbial-ecology
+  target: bacteriophage
+  relation: studies

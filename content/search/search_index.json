@@ -1,0 +1,30 @@
+[
+  {
+    "id": "EMV-GENERAL2609-0003",
+    "title": "QBayMic: Quantum-coupled variational Bayes for clustering and feature selection in low-signal microbiome data",
+    "collection": "GENERAL",
+    "type": "preprint",
+    "score": 0,
+    "priority": "low",
+    "summary": "# Pending summary\n",
+    "profiles": [],
+    "methods": []
+  },
+  {
+    "id": "EMV-TPHAGE2609-0002",
+    "title": "DeepVir: A reproducible workflow for large-scale viral dark matter discovery",
+    "collection": "TPHAGE",
+    "type": "preprint",
+    "score": 100,
+    "priority": "high",
+    "summary": "# Dashboard summary\nThis came from Founder Studio.",
+    "profiles": [
+      "Phage Core",
+      "Tool Intelligence"
+    ],
+    "methods": [
+      "viral dark matter",
+      "workflow"
+    ]
+  }
+]

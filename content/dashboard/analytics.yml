@@ -1,0 +1,26 @@
+collections:
+  GENERAL: 1
+  TPHAGE: 1
+methods:
+  viral dark matter: 1
+  workflow: 1
+priorities:
+  low: 1
+  high: 1
+average_score: 50.0
+health_score: 70.0
+collection_chart:
+- name: GENERAL
+  value: 1
+- name: TPHAGE
+  value: 1
+method_chart:
+- name: viral dark matter
+  value: 1
+- name: workflow
+  value: 1
+priority_chart:
+- name: low
+  value: 1
+- name: high
+  value: 1

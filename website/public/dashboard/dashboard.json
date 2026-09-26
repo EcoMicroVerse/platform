@@ -349,6 +349,20 @@
       "why_it_matters": null
     }
   ],
+  "approved_items": [
+    {
+      "emv_id": "EMV-GENERAL2609-0003",
+      "title": "QBayMic: Quantum-coupled variational Bayes for clustering and feature selection in low-signal microbiome data",
+      "collection": "bioRxiv Bioinformatics",
+      "priority": "low"
+    },
+    {
+      "emv_id": "EMV-TPHAGE2609-0002",
+      "title": "DeepVir: A reproducible workflow for large-scale viral dark matter discovery",
+      "collection": "bioRxiv Bioinformatics",
+      "priority": "high"
+    }
+  ],
   "approved_objects": [
     {
       "status": "approved",

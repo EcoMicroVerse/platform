@@ -1,0 +1,45 @@
+
+- id: deepvir
+  label: DeepVir
+  type: software
+  description: Reproducible viral discovery workflow
+
+- id: viral-dark-matter
+  label: Viral Dark Matter
+  type: concept
+  description: Previously uncharacterised viral sequence space
+
+- id: metagenomics
+  label: Metagenomics
+  type: method
+  description: Sequencing entire microbial communities
+
+- id: tphage
+  label: TPHAGE
+  type: collection
+  description: EcoMicroVerse TPHAGE collection
+
+- id: viral-discovery
+  label: Viral Discovery
+  type: concept
+  description: Identification of viruses from sequencing data
+
+- id: hmmer
+  label: HMMER
+  type: software
+  description: Hidden Markov Model sequence search software
+
+- id: prophage
+  label: Prophage
+  type: concept
+  description: Integrated bacteriophage within a microbial genome
+
+- id: bacteriophage
+  label: Bacteriophage
+  type: organism
+  description: Viruses that infect bacteria
+
+- id: microbial-ecology
+  label: Microbial Ecology
+  type: academic_field
+  description: Study of microbial interactions in ecosystems

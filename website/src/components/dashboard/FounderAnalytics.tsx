@@ -21,7 +21,7 @@ export default function FounderAnalytics({ analytics }: Props) {
 
       <div className="mb-6">
         <div className="text-xs uppercase tracking-widest text-teal-300">
-          Founder Analytics
+          Editorial Analytics
         </div>
 
         <h2 className="mt-2 text-2xl font-bold text-white">

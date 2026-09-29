@@ -2,12 +2,23 @@ import {
   loadArticle,
   loadRelatedResearch,
 } from "@/lib/public";
-
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import ReadingCompanion from "@/components/public/ReadingCompanion";
+import ResearchTimeline from "@/components/public/ResearchTimeline";
 import { Network } from "lucide-react";
+import ScientificSection from "@/components/public/ScientificSection";
+import ReadingProgress from "@/components/public/ReadingProgress";
+import CopyCitationButton from "@/components/public/CopyCitationButton";
+import ResearchObjectInspector from "@/components/public/ResearchObjectInspector";
+import CitationExplorer from "@/components/public/CitationExplorer";
+import TimelineIntelligence from "@/components/public/TimelineIntelligence";
+import PublicationHistory from "@/components/public/PublicationHistory";
+import ResearchAssistant from "@/components/public/ResearchAssistant"
+import { createMarkdownComponents } from "@/components/entities/MarkdownComponents";
+import SemanticRelatedSection from "@/components/public/SemanticRelatedSection";
+import { getSemanticRelated } from "@/lib/semanticRelated";
 
 type Props = {
   params: Promise<{
@@ -22,6 +33,10 @@ export default async function ArticlePage({ params }: Props) {
 
   const related = await loadRelatedResearch(id);
 
+  const semanticRelated = await getSemanticRelated(data);
+
+  const markdownComponents = await createMarkdownComponents();
+
   const words = data.article.split(/\s+/).length;
 
   const readingTime = Math.max(
@@ -29,15 +44,49 @@ export default async function ArticlePage({ params }: Props) {
     Math.round(words / 200)
   );
 
-  const headings = data.article
+  const publicationHistory = [
+  {
+    stage: "Draft Created",
+    date: "Editorial Workspace",
+    icon: "draft" as const,
+  },
+  {
+    stage: "Scientific Review",
+    date: "Editorial Validation",
+    icon: "review" as const,
+  },
+  {
+    stage: "Approved",
+    date: "Research Object Complete",
+    icon: "approved" as const,
+  },
+  {
+    stage: "Published",
+    date: "EcoMicroVerse",
+    icon: "published" as const,
+  },
+];
+
+  
+const headings = [
+  "Executive Summary",
+  ...(data.methodology ? ["Methodology"] : []),
+  ...(data.results ? ["Results"] : []),
+  ...(data.discussion ? ["Discussion"] : []),
+  ...(data.limitations ? ["Limitations"] : []),
+  ...(data.future_work ? ["Future Work"] : []),
+  ...(data.key_takeaways ? ["Key Takeaways"] : []),
+  ...data.article
     .split("\n")
     .filter((line: string) => line.startsWith("##"))
     .map((line: string) =>
       line.replace(/^##\s*/, "")
-    );
+    ),
+];
 
   return (
     <main className="min-h-screen bg-[#07121f] text-white">
+      <ReadingProgress />
       <div className="mx-auto max-w-6xl p-8">
 
         {/* Breadcrumb */}
@@ -96,6 +145,25 @@ export default async function ArticlePage({ params }: Props) {
 
         </header>
 
+        
+<div className="mb-8 rounded-2xl border border-slate-800 bg-[#061426] p-5">
+  <div className="flex flex-wrap items-center justify-between gap-4">
+
+    <div>
+      <div className="text-xs uppercase tracking-widest text-slate-400">
+        EcoMicroVerse Research Object
+      </div>
+
+      <div className="mt-2 font-mono text-teal-300">
+        {id}
+      </div>
+    </div>
+
+    <CopyCitationButton />
+
+  </div>
+</div>
+
         <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
 
           {/* Main Article */}
@@ -117,7 +185,10 @@ export default async function ArticlePage({ params }: Props) {
   "
 >
 
-            <div className="mb-10 rounded-xl bg-[#061426] p-6">
+            <div
+  id="executive-summary"
+  className="mb-10 rounded-xl border border-teal-500/20 bg-[#061426] p-6"
+>
 
               <div className="mb-3 text-xs uppercase tracking-widest text-teal-300">
                 Executive Summary
@@ -128,12 +199,74 @@ export default async function ArticlePage({ params }: Props) {
                 {data.summary}
               </ReactMarkdown>
 
+              
+<div className="mt-8 space-y-6">
+
+  <ScientificSection
+    title="Methodology"
+    content={data.methodology}
+  />
+
+  <ScientificSection
+    title="Results"
+    content={data.results}
+  />
+
+  <ScientificSection
+    title="Discussion"
+    content={data.discussion}
+  />
+
+  <ScientificSection
+    title="Limitations"
+    content={data.limitations}
+    defaultOpen={false}
+  />
+
+  <ScientificSection
+    title="Future Work"
+    content={data.future_work}
+    defaultOpen={false}
+  />
+
+  <ScientificSection
+    title="Key Takeaways"
+    content={data.key_takeaways}
+    defaultOpen={true}
+  />
+
+</div>
+
             </div>
 
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {data.article}
-            </ReactMarkdown>
+            <TimelineIntelligence
+  events={data.timeline?.events ?? []}
+/>
+            <ReactMarkdown
+  remarkPlugins={[remarkGfm]}
+  components={markdownComponents}
+>
+  {data.article}
+</ReactMarkdown>
 
+            <div className="mt-16">
+  <CitationExplorer
+    citations={data.citations?.references ?? []}
+  />
+</div>
+
+<div className="mt-16">
+  <PublicationHistory
+    history={publicationHistory}
+  />
+</div>
+
+<div className="mt-16">
+  <ResearchAssistant
+    articleTitle={data.metadata.title}
+  />
+</div>
+            
             {/* Related Research */}
 
             <section className="mt-16">
@@ -252,6 +385,10 @@ export default async function ArticlePage({ params }: Props) {
 
             <div className="rounded-xl bg-[#061426] p-6">
 
+              <ResearchObjectInspector
+  article={data}
+  readingTime={readingTime}
+/>
               <h3 className="font-semibold">
                 On this page
               </h3>
@@ -272,7 +409,14 @@ export default async function ArticlePage({ params }: Props) {
                       key={index}
                       className="border-l border-slate-700 pl-3 text-slate-300 transition hover:border-teal-400 hover:text-white"
                     >
-                      {heading}
+                      <a
+  href={`#${heading
+    .toLowerCase()
+    .replace(/\s+/g, "-")}`}
+  className="block"
+>
+  {heading}
+</a>
                     </div>
 
                   ))
@@ -288,6 +432,9 @@ export default async function ArticlePage({ params }: Props) {
         </div>
 
       </div>
+      <SemanticRelatedSection
+  articles={semanticRelated}
+/>
     </main>
   );
 }

@@ -43,9 +43,18 @@ export default async function CollectionPage({ params }: Props) {
           <h1 className="mt-4 text-5xl font-bold">{collection}</h1>
 
           <p className="mt-4 max-w-3xl text-lg text-slate-300">
-            Explore curated research, editorial insights and interconnected
-            discoveries across the {collection} collection.
-          </p>
+  Explore curated research, editorial insights and interconnected
+  discoveries across the {collection} collection.
+</p>
+
+<div className="mt-8 flex flex-wrap gap-4">
+  <Link
+    href={`/collections/${collection}/graph`}
+    className="rounded-xl bg-teal-500 px-5 py-3 font-semibold text-black transition hover:bg-teal-400"
+  >
+    Open Knowledge Graph
+  </Link>
+</div>
         </header>
 
         {/* Statistics Cards */}
@@ -130,17 +139,80 @@ export default async function CollectionPage({ params }: Props) {
               </span>
             </div>
 
-            <div className="mt-8">
-              <Link
-                href={`/articles/${data.featured.emv_id}`}
-                className="inline-block rounded-xl bg-teal-500 px-5 py-3 font-semibold text-black transition hover:bg-teal-400"
-              >
-                Read Research →
-              </Link>
-            </div>
+            <div className="mt-8 flex flex-wrap gap-4">
+
+  <Link
+    href={`/articles/${data.featured.emv_id}`}
+    className="rounded-xl bg-teal-500 px-5 py-3 font-semibold text-black transition hover:bg-teal-400"
+  >
+    Read Research →
+  </Link>
+
+  <Link
+    href={`/collections/${collection}/graph`}
+    className="rounded-xl border border-teal-500/30 px-5 py-3 font-semibold text-teal-300 transition hover:bg-teal-500/10"
+  >
+    View Knowledge Graph
+  </Link>
+
+</div>
           </section>
         )}
 
+        {/* Knowledge Map Preview */}
+
+<section className="rounded-3xl border border-teal-500/20 bg-[#061426] p-8">
+
+  <div className="text-xs uppercase tracking-widest text-teal-300">
+    Knowledge Map
+  </div>
+
+  <h2 className="mt-3 text-3xl font-bold">
+    Explore connected scientific entities
+  </h2>
+
+  <p className="mt-4 max-w-3xl text-slate-300">
+    Discover how methods, tools, organisms and concepts connect
+    across the {collection} collection through an interactive
+    scientific knowledge graph.
+  </p>
+
+  <div className="mt-8 grid gap-5 md:grid-cols-3">
+
+    <div className="rounded-xl border border-slate-800 bg-[#07121f] p-5">
+      <div className="text-sm text-teal-300">Methods</div>
+      <div className="mt-2 text-slate-300">
+        Explore recurring experimental workflows.
+      </div>
+    </div>
+
+    <div className="rounded-xl border border-slate-800 bg-[#07121f] p-5">
+      <div className="text-sm text-teal-300">Tools</div>
+      <div className="mt-2 text-slate-300">
+        Discover software and computational pipelines.
+      </div>
+    </div>
+
+    <div className="rounded-xl border border-slate-800 bg-[#07121f] p-5">
+      <div className="text-sm text-teal-300">Concepts</div>
+      <div className="mt-2 text-slate-300">
+        Follow scientific relationships across Research Objects.
+      </div>
+    </div>
+
+  </div>
+
+  <div className="mt-8">
+    <Link
+      href={`/collections/${collection}/graph`}
+      className="inline-flex rounded-xl bg-teal-500 px-5 py-3 font-semibold text-black transition hover:bg-teal-400"
+    >
+      Launch Collection Graph
+    </Link>
+  </div>
+
+</section>
+        
         {/* Latest Research */}
 
         <section>

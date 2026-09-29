@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CommandPaletteLoader from "@/components/layout/CommandPaletteLoader";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ecomicroverse.bio"),
@@ -16,8 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="bg-[#07121f] text-white">
-        {children}
-      </body>
+
+  <CommandPaletteLoader/>
+
+  {children}
+
+</body>
     </html>
   );
 }

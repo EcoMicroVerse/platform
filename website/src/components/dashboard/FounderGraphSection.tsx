@@ -5,7 +5,7 @@ import { useState } from "react";
 import IntelligenceGraph from "./IntelligenceGraph";
 import GraphInspector from "./GraphInspector";
 
-export default function FounderGraphSection() {
+export default function EditorialGraphSection() {
   const [selectedNode, setSelectedNode] = useState<any>(null);
 
   return (

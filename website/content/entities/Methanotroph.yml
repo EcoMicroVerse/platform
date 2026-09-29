@@ -1,0 +1,16 @@
+name: Methanotroph
+type: Microbial Group
+
+description: >
+  Methane-oxidising bacteria that consume methane
+  as carbon and energy.
+
+collections:
+  - Microbial Ecology
+
+related:
+  - Methylococcus
+  - Methylosinus
+
+articles:
+  - EMV-TPHAGE2609-0002

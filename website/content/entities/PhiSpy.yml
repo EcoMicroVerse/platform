@@ -1,0 +1,15 @@
+name: PhiSpy
+type: Bioinformatics Tool
+
+description: >
+  Machine-learning prophage prediction software.
+
+collections:
+  - Tools
+
+related:
+  - PHASTER
+  - Phigaro
+
+articles:
+  - EMV-TPHAGE2609-0002

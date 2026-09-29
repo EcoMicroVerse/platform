@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { Sparkles, Send } from "lucide-react";
 
-export default function FounderAssistant() {
+export default function EditorialAssistant() {
   const [question, setQuestion] = useState("");
   const [results, setResults] = useState<any[]>([]);
 
@@ -33,7 +33,7 @@ export default function FounderAssistant() {
 
         <div>
           <h2 className="text-3xl font-bold">
-            AI Founder Assistant
+            AI Editorial Assistant
           </h2>
 
           <p className="text-slate-400">
@@ -76,7 +76,7 @@ export default function FounderAssistant() {
           "High priority papers",
           "Approved phage tools",
           "Weekly summary",
-          "Founder timeline",
+          "Editorial timeline",
         ].map((item) => (
           <button
             key={item}

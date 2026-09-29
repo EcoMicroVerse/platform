@@ -1,0 +1,202 @@
+import fs from "fs/promises";
+import path from "path";
+import { load } from "js-yaml";
+import type { ReviewItem, ApprovedItem } from "./types";
+
+const ROOT = path.resolve(process.cwd(), "..");
+
+export async function loadInbox(): Promise<ReviewItem[]> {
+  const dir = path.join(ROOT, "content", "inbox");
+  const files = await fs.readdir(dir);
+
+  const items: ReviewItem[] = [];
+
+  for (const file of files.filter(f => f.endsWith(".yml"))) {
+    const content = await fs.readFile(path.join(dir, file), "utf8");
+    items.push(load(content) as ReviewItem);
+  }
+
+  return items;
+}
+
+export async function loadApproved(): Promise<ApprovedItem[]> {
+  const dir = path.join(ROOT, "content", "approved");
+  const folders = await fs.readdir(dir);
+
+  const objects: ApprovedItem[] = [];
+
+  for (const folder of folders) {
+    const metadata = path.join(dir, folder, "metadata.yml");
+
+    try {
+      const content = await fs.readFile(metadata, "utf8");
+      objects.push(load(content) as ApprovedItem);
+    } catch {}
+  }
+
+  return objects;
+}
+
+export interface TimelineEvent {
+  timestamp: string;
+  type: string;
+  title: string;
+  collection: string;
+}
+
+export async function loadTimeline(): Promise<TimelineEvent[]> {
+  const file = path.join(ROOT, "memory-engine", "founder_timeline.yml");
+
+  try {
+    const content = await fs.readFile(file, "utf8");
+    const parsed = load(content) as { events?: TimelineEvent[] };
+
+    return (parsed.events ?? []).sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() -
+        new Date(a.timestamp).getTime()
+    );
+  } catch {
+    return [];
+  }
+}
+export interface WorkflowStatus {
+  scannerToday: boolean;
+  pendingReview: number;
+  weeklyPulse: boolean;
+  dashboardReady: boolean;
+}
+export async function loadWorkflowStatus() {
+  return {
+    scannerToday: true,
+    pendingReview: 18,
+    weeklyPulse: false,
+    dashboardReady: true,
+  };
+}
+
+export async function loadFounderBrief() {
+  const file = path.join(
+    ROOT,
+    "content",
+    "dashboard",
+    "founder_brief.yml"
+  );
+
+  const content = await fs.readFile(file, "utf8");
+
+  return load(content) as any;
+}
+
+export async function loadAnalytics() {
+  const file = path.join(
+    ROOT,
+    "content",
+    "dashboard",
+    "analytics.yml"
+  );
+
+  const content = await fs.readFile(file, "utf8");
+
+  return load(content) as any;
+}
+export async function loadMomentum() {
+
+  const file = path.join(
+    ROOT,
+    "content",
+    "dashboard",
+    "momentum.yml"
+  );
+
+  const content = await fs.readFile(file,"utf8");
+
+  return load(content) as any;
+
+}
+
+  export async function loadEditorialReadiness() {
+  const approvedDir = path.resolve(
+    process.cwd(),
+    "..",
+    "content",
+    "approved"
+  );
+
+  
+export async function loadWeeklyDigest() {
+  const approved = await loadApproved();
+  const readiness = await loadEditorialReadiness();
+
+  const graph = await import("./graph").then((m) =>
+    m.loadGraph()
+  );
+
+  const collections = new Set(
+    approved.map((item: any) => item.recommended_collection)
+  );
+
+  const averageReadiness =
+    readiness.length === 0
+      ? 0
+      : Math.round(
+          readiness.reduce(
+            (sum, item) => sum + item.score,
+            0
+          ) / readiness.length
+        );
+
+  return {
+    week: "Current",
+    newArticles: approved.length,
+    collectionsExpanded: collections.size,
+    graphNodes: graph.nodes.length,
+    graphLinks: graph.edges.length,
+    averageReadiness,
+  };
+}
+
+  const folders = await fs.readdir(approvedDir);
+
+  const reports = [];
+
+  for (const folder of folders) {
+    const articleDir = path.join(approvedDir, folder);
+
+    const exists = async (file: string) => {
+      try {
+        await fs.access(path.join(articleDir, file));
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    const metadata = await exists("metadata.yml");
+    const summary = await exists("summary.md");
+    const article = await exists("article.md");
+    const timeline = await exists("timeline.yml");
+    const citations = await exists("citations.yml");
+
+    const score = Math.round(
+      ([metadata, summary, article, timeline, citations]
+        .filter(Boolean).length /
+        5) *
+        100
+    );
+
+    reports.push({
+      id: folder,
+      metadata,
+      summary,
+      article,
+      timeline,
+      citations,
+      score,
+    });
+  }
+
+  reports.sort((a, b) => b.score - a.score);
+
+  return reports;
+}

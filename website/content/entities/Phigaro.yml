@@ -1,0 +1,16 @@
+name: Phigaro
+type: Bioinformatics Tool
+
+description: >
+  Prophage prediction software for bacterial genomes.
+
+collections:
+  - Tools
+  - Prophages
+
+related:
+  - PHASTER
+  - PhiSpy
+
+articles:
+  - EMV-TPHAGE2609-0002

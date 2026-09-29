@@ -5,7 +5,7 @@ export default function ReviewQueue({ items }: any) {
   return (
     <section className="rounded-2xl border border-slate-700 bg-slate-900/50 p-6 backdrop-blur">
       <h2 className="mb-5 text-xl font-semibold text-white">
-        Review Queue
+        Editorial Review Queue
       </h2>
 
       <div className="space-y-5">
@@ -46,7 +46,7 @@ export default function ReviewQueue({ items }: any) {
               </span>
 
               <span className="text-yellow-300">
-                Pending Founder Review
+                Pending Editorial Review
               </span>
 
             </div>

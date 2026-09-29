@@ -114,3 +114,308 @@ export async function loadMomentum() {
   return load(content) as any;
 
 }
+
+export async function loadEditorialReadiness() {
+  const approvedDir = path.resolve(
+    process.cwd(),
+    "..",
+    "content",
+    "approved"
+  );
+
+  const folders = await fs.readdir(approvedDir);
+
+  const reports = [];
+
+  for (const folder of folders) {
+    const base = path.join(approvedDir, folder);
+
+    const exists = async (file: string) => {
+      try {
+        await fs.access(path.join(base, file));
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    const metadata = await exists("metadata.yml");
+    const summary = await exists("summary.md");
+    const article = await exists("article.md");
+    const timeline = await exists("timeline.yml");
+    const citations = await exists("citations.yml");
+
+    const score = Math.round(
+      ([metadata, summary, article, timeline, citations]
+        .filter(Boolean).length / 5) * 100
+    );
+
+    reports.push({
+      id: folder,
+      metadata,
+      summary,
+      article,
+      timeline,
+      citations,
+      score,
+    });
+  }
+
+  reports.sort((a: any, b: any) => b.score - a.score);
+
+  return reports;
+}
+
+export async function loadWeeklyDigest() {
+  const approved = await loadApproved();
+  const readiness = await loadEditorialReadiness();
+
+  const graph = await import("./graph").then((m) =>
+    m.loadGraph()
+  );
+
+  const collections = new Set(
+    approved.map((item: any) => item.recommended_collection)
+  );
+
+  const averageReadiness =
+    readiness.length === 0
+      ? 0
+      : Math.round(
+          readiness.reduce(
+            (sum: number, item: any) => sum + item.score,
+            0
+          ) / readiness.length
+        );
+
+  return {
+    week: "Current",
+    newArticles: approved.length,
+    collectionsExpanded: collections.size,
+    graphNodes: graph.nodes.length,
+    graphLinks: graph.edges.length,
+    averageReadiness,
+  };
+}
+
+export async function loadWeeklyHighlights() {
+  const approved = await loadApproved();
+  const graph = await import("./graph").then((m) =>
+    m.loadGraph()
+  );
+  const readiness = await loadEditorialReadiness();
+
+  const average =
+    readiness.length === 0
+      ? 0
+      : Math.round(
+          readiness.reduce(
+            (sum: number, item: any) => sum + item.score,
+            0
+          ) / readiness.length
+        );
+
+  const highlights = [
+    `${approved.length} Research Objects currently approved.`,
+    `Knowledge Graph contains ${graph.nodes.length} entities and ${graph.edges.length} relationships.`,
+    `Editorial readiness currently averages ${average}%.`,
+  ];
+
+  const collections = [
+    ...new Set(
+      approved.map((item: any) => item.recommended_collection)
+    ),
+  ];
+
+  if (collections.length > 0) {
+    highlights.push(
+      `${collections[0]} remains an active editorial collection.`
+    );
+  }
+
+  return highlights;
+}
+export async function loadFounderRecommendations() {
+  const approved = await loadApproved();
+  const readiness = await loadEditorialReadiness();
+
+  const recommendations: {
+    title: string;
+    description: string;
+    priority: "High" | "Medium" | "Low";
+  }[] = [];
+
+  const missingCitations = readiness.filter(
+    (item: any) => !item.citations
+  );
+
+  if (missingCitations.length > 0) {
+    recommendations.push({
+      title: "Complete citations",
+      description: `${missingCitations.length} Research Object(s) are missing citation files.`,
+      priority: "High",
+    });
+  }
+
+  const incompleteTimeline = readiness.filter(
+    (item: any) => !item.timeline
+  );
+
+  if (incompleteTimeline.length > 0) {
+    recommendations.push({
+      title: "Add research timelines",
+      description: `${incompleteTimeline.length} Research Object(s) need timeline.yml.`,
+      priority: "Medium",
+    });
+  }
+
+  const collections = new Set(
+    approved.map((item: any) => item.recommended_collection)
+  );
+
+  recommendations.push({
+    title: "Expand collections",
+    description: `${collections.size} collections are active. Continue strengthening connections between them.`,
+    priority: "Low",
+  });
+
+  if (approved.length > 0) {
+    recommendations.push({
+      title: "Prepare next publication",
+      description: `The editorial pipeline is healthy with ${approved.length} approved Research Objects.`,
+      priority: "Medium",
+    });
+  }
+
+  return recommendations;
+}
+
+export async function loadNewsletterPreview() {
+  const approved = await loadApproved();
+
+  return {
+    title: "EcoMicroVerse Weekly Intelligence",
+    summary:
+      "A curated digest of bacteriophage, prophage, microbial ecology and bioinformatics discoveries.",
+    articles: approved.length,
+  };
+}
+export async function loadExportStudio() {
+  const approved = await loadApproved();
+
+  const latest = approved.length > 0 ? approved[0] : null;
+
+  const title =
+    latest?.title ?? "EcoMicroVerse Weekly Intelligence";
+
+  const summary = latest
+    ? "The latest approved Research Object is ready for multi-channel publishing through EcoMicroVerse."
+    : "Latest discoveries across bacteriophages, prophages, microbial ecology and bioinformatics.";
+
+  return {
+    newsletter: {
+      title,
+      body: summary,
+    },
+
+    founderBrief: {
+      title: "Founder Brief",
+      body: `This week ${approved.length} approved Research Object${
+        approved.length !== 1 ? "s are" : " is"
+      } ready for publication.`,
+    },
+
+    linkedin: {
+      title,
+      body: `${summary}\n\nRead more on EcoMicroVerse.`,
+    },
+
+    bluesky: {
+      body: `${title}\n\n${summary.substring(0, 120)}...`,
+    },
+
+    x: {
+      body: `${title}: ${summary.substring(0, 180)}...`,
+    },
+  };
+}
+export async function loadPublishingQueue() {
+  const approved = await loadApproved();
+
+  const published = approved.filter(
+    (item: any) => item.status === "published"
+  ).length;
+
+  const scheduled = approved.filter(
+    (item: any) => item.status === "scheduled"
+  ).length;
+
+  const ready =
+    approved.length - published - scheduled;
+
+  return {
+    ready: Math.max(ready, 0),
+    published,
+    scheduled,
+    total: approved.length,
+  };
+}
+export async function loadPublicationJobs() {
+  const approved = await loadApproved();
+
+  return approved.map((item: any) => {
+    const status: "draft" | "scheduled" | "published" =
+      item.status === "published"
+        ? "published"
+        : item.status === "scheduled"
+        ? "scheduled"
+        : "draft";
+
+    return {
+      id: item.emv_id ?? item.id ?? "UNKNOWN",
+      title: item.title,
+      status,
+    };
+  });
+}
+
+export async function loadApprovedForPublishing() {
+  const approved = await loadApproved();
+
+  return approved.map((item: any) => ({
+    id: item.emv_id ?? item.id ?? "UNKNOWN",
+    title: item.title,
+  }));
+}
+
+/* ---------- Editorial Scheduler ---------- */
+
+export interface SchedulerItem {
+  date: string;
+  type: string;
+  status: string;
+  title: string;
+}
+
+export async function loadSchedulerQueue(): Promise<SchedulerItem[]> {
+  const file = path.join(
+    ROOT,
+    "content",
+    "scheduler",
+    "queue.yml"
+  );
+
+  try {
+    const text = await fs.readFile(file, "utf8");
+
+    const data = load(text) as {
+      queue?: SchedulerItem[];
+    };
+
+    return data.queue ?? [];
+  } catch {
+    // If the scheduler file doesn't exist yet,
+    // Mission Control still loads safely.
+    return [];
+  }
+}

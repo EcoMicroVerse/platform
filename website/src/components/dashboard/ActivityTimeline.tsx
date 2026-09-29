@@ -29,7 +29,7 @@ export default function ActivityTimeline({
   return (
     <section className="rounded-2xl border border-slate-700 bg-slate-900/50 p-6 backdrop-blur">
       <h2 className="mb-5 text-xl font-semibold text-white">
-        Founder Activity
+        Editorial Activity
       </h2>
 
       <div className="space-y-5">

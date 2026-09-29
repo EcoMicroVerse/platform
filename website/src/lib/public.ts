@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { load } from "js-yaml";
+import { loadGraph } from "./graph";
 
 const ROOT = path.resolve(process.cwd(), "..");
 
@@ -59,6 +60,12 @@ export async function loadPublicHomepage() {
 }
 
 export async function loadArticle(id: string) {
+  const articleDir = path.join(
+  ROOT,
+  "content",
+  "approved",
+  id
+);
   const folder = path.join(
     ROOT,
     "content",
@@ -83,6 +90,22 @@ export async function loadArticle(id: string) {
     "utf8"
   );
 
+  
+async function readOptional(filename: string) {
+  try {
+    return await fs.readFile(path.join(articleDir, filename), "utf8");
+  } catch {
+    return "";
+  }
+}
+
+const methodology = await readOptional("methodology.md");
+const results = await readOptional("results.md");
+const discussion = await readOptional("discussion.md");
+const limitations = await readOptional("limitations.md");
+const future_work = await readOptional("future_work.md");
+const key_takeaways = await readOptional("key_takeaways.md");
+
   let readingPath: any = { recommended: [] };
 
   try {
@@ -105,13 +128,31 @@ export async function loadArticle(id: string) {
     );
   } catch {}
 
+  let timeline: any = { events: [] };
+
+try {
+  timeline = load(
+    await fs.readFile(
+      path.join(folder, "timeline.yml"),
+      "utf8"
+    )
+  );
+} catch {}
+
   return {
-    metadata,
-    summary,
-    article,
-    readingPath,
-    citations,
-  };
+  metadata,
+  summary,
+  article,
+  readingPath,
+  citations,
+  timeline,
+  methodology,
+  results,
+  discussion,
+  limitations,
+  future_work,
+  key_takeaways,
+};
 }
 
 export async function loadCollection(collection: string) {
@@ -243,4 +284,73 @@ export async function loadRelatedResearch(id: string) {
         b.similarity - a.similarity
     )
     .slice(0, 4);
+}
+
+export async function loadCollectionGraph(collection: string) {
+
+  const homepage = await loadPublicHomepage();
+  const graph = await loadGraph();
+
+  const articles = homepage.articles.filter(
+    (article: any) =>
+      article.recommended_collection === collection
+  );
+
+  const articleTerms = new Set<string>();
+
+  for (const article of articles) {
+
+    for (const term of article.matched_terms ?? []) {
+
+      articleTerms.add(
+        typeof term === "string"
+          ? term
+          : term.term
+      );
+
+    }
+
+  }
+
+  const nodes = graph.nodes.filter(
+    (node: any) =>
+      articleTerms.has(node.label) ||
+      articleTerms.has(node.id)
+  );
+
+  const nodeIds = new Set(nodes.map((n: any) => n.id));
+
+  const edges = graph.edges.filter((edge: any) => {
+
+    const source =
+      typeof edge.source === "string"
+        ? edge.source
+        : edge.source.id;
+
+    const target =
+      typeof edge.target === "string"
+        ? edge.target
+        : edge.target.id;
+
+    return nodeIds.has(source) && nodeIds.has(target);
+
+  });
+
+  return {
+  collection,
+  nodes,
+  edges,
+  articleCount: articles.length,
+};
+
+}
+
+export function validateMetadata(metadata: any) {
+  return {
+    title: !!metadata.title,
+    emv_id: !!metadata.emv_id,
+    score: metadata.score !== undefined,
+    type: !!metadata.type,
+    collection: !!metadata.recommended_collection,
+  };
 }

@@ -1,0 +1,35 @@
+date: 2026-09-27
+
+featured:
+  title: "The plaque that changed virology forever"
+
+  category: "Today in Microbial History"
+
+  reading_time: 2
+
+  summary: >
+    On this day, an observation that looked like contamination
+    helped launch bacteriophage research and ultimately transformed
+    molecular biology.
+
+  chain:
+    - Bacteriophage discovery
+    - Phage typing
+    - Molecular biology
+    - CRISPR
+    - Modern phage therapy
+
+on_this_day:
+  title: "A foundational prophage milestone"
+
+  summary: >
+    Early prophage research reshaped how scientists viewed bacterial evolution.
+
+tool_spotlight:
+  name: "PHASTER"
+
+  summary: >
+    The prophage prediction tool that became one of the most widely used
+    resources for bacterial genome analysis.
+
+  related_entity: PHASTER

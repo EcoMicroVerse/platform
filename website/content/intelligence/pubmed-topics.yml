@@ -1,0 +1,133 @@
+topics:
+  - id: phage
+    name: Phage
+    keywords:
+      - bacteriophage
+      - phage
+      - phages
+      - bacteriophages
+      - cyanophage
+      - myophage
+      - podophage
+      - siphovirus
+
+  - id: prophage
+    name: Prophage
+    keywords:
+      - prophage
+      - prophages
+      - lysogenic
+      - lysogeny
+      - lysogenic cycle
+      - prophage induction
+      - temperate phage
+
+  - id: viral_ecology
+    name: Viral Ecology
+    keywords:
+      - viral ecology
+      - virus-host interaction
+      - virus host interaction
+      - phage-host interaction
+      - phage host interaction
+      - viral community
+      - viral communities
+      - virome
+      - viral diversity
+
+  - id: methanotroph
+    name: Methanotroph
+    keywords:
+      - methanotroph
+      - methanotrophs
+      - methane-oxidizing bacteria
+      - methane oxidizing bacteria
+      - methane monooxygenase
+      - particulate methane monooxygenase
+      - soluble methane monooxygenase
+      - pmoA
+      - mmoX
+
+  - id: metagenomics
+    name: Metagenomics
+    keywords:
+      - metagenome
+      - metagenomes
+      - metagenomic
+      - metagenomics
+      - shotgun metagenomics
+      - environmental genomics
+
+  - id: metatranscriptomics
+    name: Metatranscriptomics
+    keywords:
+      - metatranscriptome
+      - metatranscriptomes
+      - metatranscriptomic
+      - metatranscriptomics
+      - transcriptome
+      - environmental transcriptomics
+
+  - id: freshwater
+    name: Freshwater
+    keywords:
+      - freshwater
+      - freshwater lake
+      - freshwater lakes
+      - lake
+      - lakes
+      - river
+      - rivers
+      - limnology
+
+  - id: marine
+    name: Marine
+    keywords:
+      - marine
+      - ocean
+      - oceans
+      - seawater
+      - seawater
+      - marine microbiome
+      - marine microbiota
+
+  - id: bioinformatics
+    name: Bioinformatics
+    keywords:
+      - bioinformatics
+      - computational biology
+      - genome analysis
+      - genomic analysis
+      - sequence analysis
+      - prophage prediction
+      - viral prediction
+
+  - id: genome_assembly
+    name: Genome Assembly
+    keywords:
+      - genome assembly
+      - genome assemblies
+      - assembly
+      - de novo assembly
+      - contig
+      - contigs
+      - scaffolding
+
+  - id: mag
+    name: MAG
+    keywords:
+      - metagenome-assembled genome
+      - metagenome assembled genome
+      - metagenome-assembled genomes
+      - MAG
+      - MAGs
+
+    - id: viruses
+    name: Viruses
+    keywords:
+      - virus
+      - viruses
+      - viral
+      - bacteriovirus
+      - bacterial virus
+      - bacterial viruses

@@ -1,4 +1,4 @@
-type FounderBriefProps = {
+type EditorialBriefProps = {
   brief: {
     generated: string;
     processed: number;
@@ -13,16 +13,16 @@ type FounderBriefProps = {
   };
 };
 
-export default function FounderBrief({ brief }: FounderBriefProps) {
+export default function EditorialBrief({ brief }: EditorialBriefProps) {
   return (
     <div className="rounded-3xl border border-teal-500/20 bg-gradient-to-br from-[#082028] to-[#061426] p-6">
 
       <div className="text-xs uppercase tracking-widest text-teal-300">
-        Founder Morning Brief
+        Editorial Morning Brief
       </div>
 
       <h2 className="mt-2 text-2xl font-bold text-white">
-        Good morning, Founder.
+        Good morning, Editor.
       </h2>
 
       <p className="mt-4 text-slate-300">

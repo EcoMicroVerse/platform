@@ -61,7 +61,7 @@ export default function QuickActions({
         </h2>
 
         <p className="mt-1 text-sm text-slate-400">
-          Founder workflow shortcuts and live publishing status.
+          Editorial workflow shortcuts and live publishing status.
         </p>
 
       </div>

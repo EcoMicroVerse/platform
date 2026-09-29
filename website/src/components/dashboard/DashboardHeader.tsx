@@ -1,21 +1,19 @@
 export default function DashboardHeader() {
   return (
-    <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-
-      <div>
-        <h1 className="text-4xl font-bold text-white">
-          Founder Command Center
-        </h1>
-
-        <p className="mt-2 text-slate-400">
-          Private editorial workspace powering EcoMicroVerse.
-        </p>
+    <header className="rounded-3xl border border-teal-500/20 bg-gradient-to-br from-[#082028] to-[#061426] p-10">
+      <div className="text-xs uppercase tracking-[0.35em] text-teal-300">
+        EcoMicroVerse Editorial Studio
       </div>
 
-      <div className="rounded-full border border-teal-500/40 bg-teal-500/10 px-4 py-2 text-sm text-teal-300">
-        Founder Edition
-      </div>
+      <h1 className="mt-4 text-5xl font-bold">
+        Editorial Studio
+      </h1>
 
-    </div>
+      <p className="mt-4 max-w-3xl text-lg text-slate-300">
+        The private publishing workspace where Research Objects are reviewed,
+        refined, connected through the Knowledge Graph, and prepared for
+        autonomous publication across EcoMicroVerse.
+      </p>
+    </header>
   );
 }

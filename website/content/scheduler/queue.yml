@@ -1,0 +1,15 @@
+queue:
+  - date: "2026-09-28"
+    type: "Daily Discovery"
+    status: "scheduled"
+    title: "The plaque assay that changed virology"
+
+  - date: "2026-09-29"
+    type: "Tool Spotlight"
+    status: "scheduled"
+    title: "PHASTER and modern prophage discovery"
+
+  - date: "2026-09-30"
+    type: "Historical Milestone"
+    status: "scheduled"
+    title: "Lake Washington methane discoveries"

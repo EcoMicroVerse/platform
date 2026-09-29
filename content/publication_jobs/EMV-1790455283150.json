@@ -1,0 +1,14 @@
+{
+  "id": "EMV-1790455283150",
+  "title": "Founder Publication Job",
+  "status": "draft",
+  "created": "2026-09-26T20:41:23.963Z",
+  "updated": "2026-09-26T20:41:23.963Z",
+  "channels": {
+    "website": true,
+    "newsletter": true,
+    "linkedin": false,
+    "bluesky": false,
+    "x": false
+  }
+}

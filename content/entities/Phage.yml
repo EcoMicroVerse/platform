@@ -1,0 +1,20 @@
+name: Phage
+
+type: Scientific Topic
+
+description: >
+  A broad umbrella term covering bacteriophages, prophages, viral ecology,
+  phage-host interactions, viral evolution and phage-based technologies.
+
+collections:
+  - Phage
+
+related:
+  - Bacteriophage
+  - Prophage
+  - PHASTER
+  - VirSorter2
+  - PhiSpy
+  - Phigaro
+
+articles: []

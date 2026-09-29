@@ -1,0 +1,16 @@
+name: Bacteriophage
+
+type: Virus
+
+description: >
+  Viruses that infect bacteria.
+
+collections:
+  - Phage
+
+related:
+  - Phage
+  - Prophage
+  - Viral Ecology
+
+articles: []

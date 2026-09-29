@@ -1,0 +1,18 @@
+name: Prophage
+
+type: Viral Element
+
+description: >
+  A bacteriophage genome integrated into a bacterial chromosome.
+
+collections:
+  - Phage
+  - Prophages
+
+related:
+  - PHASTER
+  - PhiSpy
+  - Phigaro
+  - VirSorter2
+
+articles: []

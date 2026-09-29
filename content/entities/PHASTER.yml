@@ -1,0 +1,19 @@
+name: PHASTER
+
+type: Bioinformatics Tool
+
+description: >
+  PHAge Search Tool Enhanced Release identifies prophage regions within bacterial genomes.
+
+collections:
+  - Bioinformatics
+  - Phage
+  - Prophages
+
+related:
+  - VirSorter2
+  - PhiSpy
+  - Phigaro
+  - Prophage
+
+articles: []

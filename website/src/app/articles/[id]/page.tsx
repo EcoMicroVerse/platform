@@ -130,8 +130,14 @@ const headings = [
           <div className="mt-6 flex flex-wrap gap-3 text-sm">
 
             <span className="rounded-full bg-teal-500/10 px-3 py-1 text-teal-300">
-              Editorial Score {data.metadata.score}
-            </span>
+  Relevance Score {data.metadata.relevance_score ?? data.metadata.score}
+</span>
+
+{data.metadata.relevance_tier && (
+  <span className="rounded-full bg-slate-800 px-3 py-1 text-slate-300">
+    Relevance {String(data.metadata.relevance_tier).replace(/^./, (c: string) => c.toUpperCase())}
+  </span>
+)}
 
             <span className="rounded-full bg-slate-800 px-3 py-1 text-slate-300">
               {data.metadata.type}
@@ -364,12 +370,24 @@ const headings = [
                 <div className="mt-6 flex flex-wrap gap-3">
 
                   <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
-                    {data.metadata.recommended_collection}
-                  </span>
+  Relevance Score {data.metadata.relevance_score ?? data.metadata.score}
+</span>
+
+{data.metadata.relevance_tier && (
+  <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
+    Relevance {String(data.metadata.relevance_tier).replace(/^./, (c: string) => c.toUpperCase())}
+  </span>
+)}
 
                   <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
-                    Editorial Score {data.metadata.score}
-                  </span>
+  Relevance Score {data.metadata.relevance_score ?? data.metadata.score}
+</span>
+
+{data.metadata.relevance_tier && (
+  <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
+    Relevance {String(data.metadata.relevance_tier).replace(/^./, (c: string) => c.toUpperCase())}
+  </span>
+)}
 
                 </div>
 

@@ -5,6 +5,24 @@ import {
   type ResearchCandidate,
 } from "./researchCandidates";
 
+function deduplicatePubMedArticles<T extends { pmid: string }>(
+  articles: T[]
+): T[] {
+  const seen = new Set<string>();
+  const unique: T[] = [];
+
+  for (const article of articles) {
+    if (seen.has(article.pmid)) {
+      continue;
+    }
+
+    seen.add(article.pmid);
+    unique.push(article);
+  }
+
+  return unique;
+}
+
 export async function discoverPubMedCandidates(
   queries?: string[],
   retmax = 5
@@ -14,8 +32,11 @@ export async function discoverPubMedCandidates(
     retmax
   );
 
+  const uniqueArticles =
+    deduplicatePubMedArticles(articles);
+
   const candidates = await Promise.all(
-    articles.map(async (article) => {
+    uniqueArticles.map(async (article) => {
       const relevance =
         await scorePubMedArticle(article);
 

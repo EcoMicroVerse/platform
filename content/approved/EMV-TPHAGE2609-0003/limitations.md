@@ -1,0 +1,1 @@
+The abstract reports efficacy in a mouse model of bacterial pneumonia but does not provide sufficient information to assess the broader applicability of PPCs across bacterial species, infection models, or clinical settings. Detailed experimental limitations, comparative controls, dosing parameters, and long-term safety outcomes are not described in the provided abstract.

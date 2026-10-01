@@ -87,7 +87,6 @@ topics:
       - ocean
       - oceans
       - seawater
-      - seawater
       - marine microbiome
       - marine microbiota
 
@@ -122,7 +121,7 @@ topics:
       - MAG
       - MAGs
 
-    - id: viruses
+  - id: viruses
     name: Viruses
     keywords:
       - virus

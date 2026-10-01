@@ -127,9 +127,32 @@ export default function ResearchObjectInspector({
 
             <div className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-slate-400">Collection</span>
-                <span>{article.metadata.recommended_collection}</span>
-              </div>
+  <span className="text-slate-400">Relevance Score</span>
+  <span>
+    {article.metadata.relevance_score ??
+      article.metadata.score}
+  </span>
+</div>
+
+{article.metadata.relevance_tier && (
+  <div className="flex justify-between">
+    <span className="text-slate-400">
+      Relevance Tier
+    </span>
+    <span className="capitalize">
+      {article.metadata.relevance_tier}
+    </span>
+  </div>
+)}
+
+{article.metadata.relevance_tier && (
+  <div className="flex justify-between">
+    <span className="text-slate-400">Relevance Tier</span>
+    <span className="capitalize">
+      {article.metadata.relevance_tier}
+    </span>
+  </div>
+)}
 
               <div className="flex justify-between">
                 <span className="text-slate-400">Type</span>
@@ -137,8 +160,21 @@ export default function ResearchObjectInspector({
               </div>
 
               <div className="flex justify-between">
-                <span className="text-slate-400">Editorial Score</span>
-                <span>{article.metadata.score}</span>
+                <div className="flex justify-between">
+  <span className="text-slate-400">Relevance Score</span>
+  <span>
+    {article.metadata.relevance_score ?? article.metadata.score}
+  </span>
+</div>
+
+{article.metadata.relevance_tier && (
+  <div className="flex justify-between">
+    <span className="text-slate-400">Relevance Tier</span>
+    <span className="capitalize">
+      {article.metadata.relevance_tier}
+    </span>
+  </div>
+)}
               </div>
             </div>
           </div>

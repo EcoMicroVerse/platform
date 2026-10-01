@@ -1,0 +1,1 @@
+The findings support platelet-based delivery as a strategy for improving the localization and persistence of therapeutic phages at sites of bacterial infection. By combining platelet inflammatory tropism with phage antibacterial activity, PPCs provide a biologically guided approach that may address important barriers associated with systemic phage therapy.

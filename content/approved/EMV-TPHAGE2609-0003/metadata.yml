@@ -1,0 +1,35 @@
+status: approved
+emv_id: EMV-TPHAGE2609-0003
+title: Platelet-phage conjugates for targeted therapy of acute bacterial pneumonia.
+source: Biomaterials
+type: paper
+collection: TPHAGE
+recommended_collection: TPHAGE
+subcategory: ''
+profile_matches: []
+priority: low
+score: 19
+relevance_score: 19
+relevance_tier: medium
+matched_terms: []
+founder_decision: approve
+published: null
+authors: []
+doi: 10.1016/j.biomaterials.2026.124564
+url: https://doi.org/10.1016/j.biomaterials.2026.124564
+link: https://doi.org/10.1016/j.biomaterials.2026.124564
+summary: >-
+  Platelet-phage conjugates (PPCs) are presented as a targeted delivery platform designed to overcome rapid systemic
+  clearance and limited tissue targeting of therapeutic phages. By conjugating phages to platelets, PPCs exploit
+  platelet inflammatory tropism to localize within infected lung tissue. The study reports increased accumulation at
+  pulmonary infection sites, extended circulation half-life, and effective treatment of bacterial pneumonia in mice.
+why_it_matters: null
+methods: []
+related_objects: []
+created_at: 2026-09-30T16:26:38.021Z
+source_metadata:
+  pmid: '42636550'
+  doi: 10.1016/j.biomaterials.2026.124564
+  journal: Biomaterials
+  publication_date: '2026-08-19'
+  publication_date_type: electronic

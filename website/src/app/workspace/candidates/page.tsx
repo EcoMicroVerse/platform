@@ -1,4 +1,7 @@
-export const dynamic = "force-dynamic";
+import {
+  getAllCandidateDecisions,
+  type CandidateDecision,
+} from "@/lib/candidateStore";
 
 import {
   discoverPubMedCandidates,
@@ -8,26 +11,111 @@ import type {
   ResearchCandidate,
 } from "@/lib/researchCandidates";
 
+import {
+  getAllArticles,
+  type ArticleRecord,
+} from "@/lib/articleStore";
+
+import CandidateFilters from "./CandidateFilters";
+
+function formatPublicationDate(
+  date: string
+): string {
+  const match = date.match(
+    /^(\d{4})-(\d{2})-(\d{2})$/
+  );
+
+  if (!match) {
+    return date;
+  }
+
+  const [, year, month, day] = match;
+
+  return `${day}/${month}/${year}`;
+}
+
 export default async function CandidatesPage() {
   let candidates: ResearchCandidate[] = [];
-  let error = "";
+  let decisions: Record<
+    string,
+    CandidateDecision
+  > = {};
+  let articles: ArticleRecord[] = [];
+  let error: string | null = null;
 
   try {
     candidates =
-      await discoverPubMedCandidates(
-        [
-          "bacteriophage",
-          "prophage",
-          "methanotroph",
-        ],
-        5
-      );
+      await discoverPubMedCandidates();
   } catch (err) {
     error =
       err instanceof Error
         ? err.message
-        : "Unable to discover research candidates.";
+        : "Unable to discover PubMed candidates.";
   }
+
+  try {
+    decisions =
+      await getAllCandidateDecisions();
+  } catch (err) {
+    console.error(
+      "Unable to load candidate decisions:",
+      err
+    );
+  }
+
+  try {
+    articles =
+      await getAllArticles();
+  } catch (err) {
+    console.error(
+      "Unable to load article records:",
+      err
+    );
+  }
+
+  /**
+   * Build a lookup table:
+   *
+   * candidate ID
+   *      ↓
+   * ArticleRecord
+   *
+   * This allows CandidateFilters/CandidateCard
+   * to determine whether a candidate has already
+   * been converted into an article.
+   */
+  const articlesByCandidateId: Record<
+    string,
+    ArticleRecord
+  > = Object.fromEntries(
+    articles
+      .filter(
+        (
+          article
+        ): article is ArticleRecord & {
+          candidateId: string;
+        } =>
+          Boolean(article.candidateId)
+      )
+      .map((article) => [
+        article.candidateId,
+        article,
+      ])
+  );
+
+  const highRelevanceCount =
+    candidates.filter(
+      (candidate) =>
+        candidate.relevanceTier === "high"
+    ).length;
+
+  const detectedTopics =
+    new Set(
+      candidates.flatMap(
+        (candidate) =>
+          candidate.matchedTopics
+      )
+    ).size;
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-10">
@@ -41,8 +129,9 @@ export default async function CandidatesPage() {
         </h1>
 
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          Newly discovered scientific literature identified
-          by the EcoMicroVerse research intelligence engine.
+          Newly discovered scientific literature
+          identified by the EcoMicroVerse research
+          intelligence engine.
         </p>
       </div>
 
@@ -76,13 +165,7 @@ export default async function CandidatesPage() {
             </p>
 
             <p className="mt-2 text-3xl font-semibold">
-              {
-                candidates.filter(
-                  (candidate) =>
-                    candidate.relevanceTier ===
-                    "high"
-                ).length
-              }
+              {highRelevanceCount}
             </p>
           </div>
 
@@ -92,160 +175,17 @@ export default async function CandidatesPage() {
             </p>
 
             <p className="mt-2 text-3xl font-semibold">
-              {
-                new Set(
-                  candidates.flatMap(
-                    (candidate) =>
-                      candidate.matchedTopics
-                  )
-                ).size
-              }
+              {detectedTopics}
             </p>
           </div>
         </div>
       )}
 
-      <div className="space-y-5">
-        {candidates.map((candidate) => (
-          <article
-            key={candidate.id}
-            className="rounded-xl border bg-background p-6"
-          >
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                  <span>
-                    {candidate.source}
-                  </span>
-
-                  <span>•</span>
-
-                  <span>
-                    {candidate.sourceId}
-                  </span>
-
-                  {candidate.publicationDate && (
-                    <>
-                      <span>•</span>
-
-                      <span>
-                        {candidate.publicationDate}
-                      </span>
-                    </>
-                  )}
-                </div>
-
-                <h2 className="mt-3 text-xl font-semibold leading-tight">
-                  {candidate.title}
-                </h2>
-
-                {candidate.journal && (
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {candidate.journal}
-                  </p>
-                )}
-
-                {candidate.authors.length > 0 && (
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {candidate.authors
-                      .slice(0, 6)
-                      .join(", ")}
-
-                    {candidate.authors.length > 6
-                      ? " et al."
-                      : ""}
-                  </p>
-                )}
-              </div>
-
-              <div className="shrink-0 rounded-xl border p-4">
-                <p className="text-xs text-muted-foreground">
-                  Relevance
-                </p>
-
-                <p className="mt-1 text-2xl font-semibold">
-                  {candidate.relevanceScore}
-                  <span className="text-sm font-normal text-muted-foreground">
-                    /100
-                  </span>
-                </p>
-
-                <p className="mt-1 text-xs capitalize text-muted-foreground">
-                  {candidate.relevanceTier}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 flex flex-wrap gap-2">
-              {candidate.matchedTopics.map(
-                (topic) => (
-                  <span
-                    key={topic}
-                    className="rounded-full border px-3 py-1 text-xs"
-                  >
-                    {topic}
-                  </span>
-                )
-              )}
-            </div>
-
-            {candidate.matchedKeywords.length >
-              0 && (
-              <div className="mt-4 rounded-lg border p-4">
-                <p className="text-xs font-medium">
-                  Detection signals
-                </p>
-
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {candidate.matchedKeywords.join(
-                    ", "
-                  )}
-                </p>
-              </div>
-            )}
-
-            {candidate.abstract && (
-              <p className="mt-5 text-sm leading-6 text-muted-foreground">
-                {candidate.abstract}
-              </p>
-            )}
-
-            <div className="mt-5 flex flex-wrap items-center gap-4">
-              <a
-                href={candidate.url}
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm underline underline-offset-4"
-              >
-                View on PubMed
-              </a>
-
-              {candidate.doi && (
-                <a
-                  href={`https://doi.org/${candidate.doi}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm underline underline-offset-4"
-                >
-                  View DOI
-                </a>
-              )}
-
-              <span className="ml-auto rounded-full border px-3 py-1 text-xs">
-                {candidate.status}
-              </span>
-            </div>
-          </article>
-        ))}
-
-        {!error && candidates.length === 0 && (
-          <div className="rounded-xl border p-8 text-center">
-            <p className="text-sm text-muted-foreground">
-              No research candidates were discovered.
-            </p>
-          </div>
-        )}
-      </div>
+      <CandidateFilters
+        candidates={candidates}
+        decisions={decisions}
+        articles={articlesByCandidateId}
+      />
     </main>
   );
 }

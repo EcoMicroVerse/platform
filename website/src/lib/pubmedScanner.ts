@@ -1,9 +1,15 @@
+export type PublicationDateType =
+  | "electronic"
+  | "issue"
+  | "unknown";
+
 export type PubMedArticle = {
   pmid: string;
   title: string;
   abstract: string;
   journal: string;
   publicationDate: string;
+  publicationDateType: PublicationDateType;
   authors: string[];
   doi?: string;
   url: string;
@@ -57,7 +63,9 @@ type PubMedSummary = {
 };
 
 function cleanText(value: string | undefined): string {
-  return (value ?? "").replace(/\s+/g, " ").trim();
+  return (value ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function buildParams(
@@ -79,7 +87,9 @@ function buildParams(
 }
 
 async function wait(ms: number): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, ms));
+  await new Promise((resolve) =>
+    setTimeout(resolve, ms)
+  );
 }
 
 async function fetchWithRetry(
@@ -88,7 +98,11 @@ async function fetchWithRetry(
 ): Promise<Response> {
   let lastResponse: Response | null = null;
 
-  for (let attempt = 0; attempt < attempts; attempt++) {
+  for (
+    let attempt = 0;
+    attempt < attempts;
+    attempt++
+  ) {
     const response = await fetch(url, {
       cache: "no-store",
     });
@@ -184,15 +198,22 @@ async function fetchPubMedSummaries(
           (item) => item.idtype === "doi"
         )?.value;
 
+      const publicationDate =
+        cleanText(record.pubdate);
+
       return {
         pmid: id,
         title: cleanText(record.title),
         abstract: "",
         journal: cleanText(record.fulljournalname),
-        publicationDate: cleanText(record.pubdate),
+        publicationDate,
+        publicationDateType:
+          publicationDate ? "issue" : "unknown",
         authors:
           record.authors
-            ?.map((author) => cleanText(author.name))
+            ?.map((author) =>
+              cleanText(author.name)
+            )
             .filter(Boolean) ?? [],
         doi,
         url: `https://pubmed.ncbi.nlm.nih.gov/${id}/`,
@@ -201,13 +222,76 @@ async function fetchPubMedSummaries(
     .filter(Boolean) as PubMedArticle[];
 }
 
+function parseElectronicPublicationDate(
+  block: string
+): string {
+  const match = block.match(
+    /<ArticleDate\s+DateType="Electronic">([\s\S]*?)<\/ArticleDate>/
+  );
+
+  if (!match) {
+    return "";
+  }
+
+  const content = match[1];
+
+  const year =
+    content.match(
+      /<Year>([\s\S]*?)<\/Year>/
+    )?.[1];
+
+  const month =
+    content.match(
+      /<Month>([\s\S]*?)<\/Month>/
+    )?.[1];
+
+  const day =
+    content.match(
+      /<Day>([\s\S]*?)<\/Day>/
+    )?.[1];
+
+  const cleanYear = cleanText(year);
+  const cleanMonth = cleanText(month);
+  const cleanDay = cleanText(day);
+
+  if (!cleanYear) {
+    return "";
+  }
+
+  if (!cleanMonth) {
+    return cleanYear;
+  }
+
+  if (!cleanDay) {
+    return `${cleanYear}-${cleanMonth.padStart(
+      2,
+      "0"
+    )}`;
+  }
+
+  return `${cleanYear}-${cleanMonth.padStart(
+    2,
+    "0"
+  )}-${cleanDay.padStart(2, "0")}`;
+}
+
 async function fetchPubMedAbstracts(
   ids: string[]
-): Promise<Map<string, string>> {
+): Promise<{
+  abstracts: Map<string, string>;
+  publicationDates: Map<string, string>;
+}> {
   const abstracts = new Map<string, string>();
+  const publicationDates = new Map<
+    string,
+    string
+  >();
 
   if (ids.length === 0) {
-    return abstracts;
+    return {
+      abstracts,
+      publicationDates,
+    };
   }
 
   const params = buildParams({
@@ -250,6 +334,20 @@ async function fetchPubMedAbstracts(
       pmidMatch[1].replace(/<[^>]+>/g, "")
     );
 
+    /*
+     * Prefer PubMed's electronic publication date
+     * over the journal issue date.
+     */
+    const electronicPublicationDate =
+      parseElectronicPublicationDate(block);
+
+    if (electronicPublicationDate) {
+      publicationDates.set(
+        pmid,
+        electronicPublicationDate
+      );
+    }
+
     const abstractMatches = [
       ...block.matchAll(
         /<AbstractText(?:[^>]*)>([\s\S]*?)<\/AbstractText>/g
@@ -279,7 +377,10 @@ async function fetchPubMedAbstracts(
     abstracts.set(pmid, abstract);
   }
 
-  return abstracts;
+  return {
+    abstracts,
+    publicationDates,
+  };
 }
 
 export async function scanPubMed(
@@ -289,7 +390,10 @@ export async function scanPubMed(
   const uniqueIds = new Set<string>();
 
   for (const query of queries) {
-    const ids = await searchPubMed(query, retmax);
+    const ids = await searchPubMed(
+      query,
+      retmax
+    );
 
     for (const id of ids) {
       uniqueIds.add(id);
@@ -304,16 +408,38 @@ export async function scanPubMed(
 
   const ids = [...uniqueIds];
 
-  const articles = await fetchPubMedSummaries(ids);
+  const articles =
+    await fetchPubMedSummaries(ids);
 
   await wait(350);
 
-  const abstracts = await fetchPubMedAbstracts(ids);
+  const fetchedData =
+    await fetchPubMedAbstracts(ids);
 
-  return articles.map((article) => ({
-    ...article,
-    abstract: abstracts.get(article.pmid) ?? "",
-  }));
+  return articles.map((article) => {
+    const electronicPublicationDate =
+      fetchedData.publicationDates.get(
+        article.pmid
+      );
+
+    return {
+      ...article,
+
+      publicationDate:
+        electronicPublicationDate ??
+        article.publicationDate,
+
+      publicationDateType:
+        electronicPublicationDate
+          ? "electronic"
+          : article.publicationDateType,
+
+      abstract:
+        fetchedData.abstracts.get(
+          article.pmid
+        ) ?? "",
+    };
+  });
 }
 
 export function getDefaultPubMedQueries(): string[] {

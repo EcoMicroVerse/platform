@@ -14,6 +14,10 @@ import {
   validateArticleForPublication,
 } from "@/lib/articlePublicationValidation";
 
+import {
+  publishResearchObjectToGitHub,
+} from "@/lib/githubPublisher";
+
 type RouteContext = {
   params: Promise<{
     id: string;
@@ -81,17 +85,35 @@ export async function POST(
 
     /*
      * Step 2:
-     * Generate the filesystem Research Object.
+     * Generate the complete Research Object.
      *
-     * If this fails, the Neon article remains APPROVED.
+     * This creates the local Research Object and also
+     * returns the exact same files in memory for GitHub.
+     *
+     * If this fails, Neon remains APPROVED.
      */
     const publication =
       await publishArticleResearchObject(article);
 
     /*
      * Step 3:
-     * Only after successful Research Object generation
-     * do we change the Neon status to PUBLISHED.
+     * Publish the exact generated Research Object
+     * to the configured GitHub base branch.
+     *
+     * If GitHub publication fails, Neon remains APPROVED.
+     */
+    const githubPublication =
+      await publishResearchObjectToGitHub({
+        emvId: article.id,
+        files: publication.githubFiles,
+        commitMessage:
+          `Publish ${article.id}: ${article.title}`,
+      });
+
+    /*
+     * Step 4:
+     * Only after GitHub confirms the commit do we
+     * change the Neon article status to PUBLISHED.
      */
     const publishedArticle =
       await updateArticleStatus(
@@ -100,7 +122,7 @@ export async function POST(
       );
 
     /*
-     * Step 4:
+     * Step 5:
      * Refresh the public article route and homepage.
      */
     revalidatePath(
@@ -122,6 +144,16 @@ export async function POST(
       publication: {
         directory: publication.directory,
         files: publication.files,
+      },
+
+      github: {
+        owner: githubPublication.owner,
+        repository: githubPublication.repo,
+        branch: githubPublication.branch,
+        commitSha: githubPublication.commitSha,
+        commitUrl: githubPublication.commitUrl,
+        filesPublished:
+          githubPublication.filesPublished,
       },
 
       publicUrl:

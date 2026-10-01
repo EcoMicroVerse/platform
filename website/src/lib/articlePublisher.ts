@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import { dump } from "js-yaml";
 import type { ArticleRecord } from "@/lib/articleStore";
+import type { ResearchObjectFile } from "@/lib/githubPublisher";
 
 const ROOT = path.resolve(process.cwd(), "..");
 
@@ -20,7 +21,9 @@ function requireField(
   const cleaned = cleanText(value);
 
   if (!cleaned) {
-    throw new Error(`Cannot publish article: ${fieldName} is empty.`);
+    throw new Error(
+      `Cannot publish article: ${fieldName} is empty.`
+    );
   }
 
   return cleaned;
@@ -100,32 +103,40 @@ function buildMetadata(article: ArticleRecord) {
       doi: article.sourceDoi,
       journal: article.sourceJournal,
       publication_date: article.sourcePublicationDate,
-      publication_date_type: article.sourcePublicationDateType,
+      publication_date_type:
+        article.sourcePublicationDateType,
     },
   };
 }
 
-async function writeOptionalMarkdown(
-  folder: string,
-  filename: string,
+function buildMarkdownContent(
   content: string
-): Promise<boolean> {
-  if (!content) {
-    return false;
-  }
-
-  await fs.writeFile(
-    path.join(folder, filename),
-    `${content}\n`,
-    "utf8"
-  );
-
-  return true;
+): string {
+  return `${content}\n`;
 }
 
-export async function publishArticleResearchObject(
+function addFile(
+  files: ResearchObjectFile[],
+  articleId: string,
+  filename: string,
+  content: string
+): void {
+  files.push({
+    path: `content/approved/${articleId}/${filename}`,
+    content,
+  });
+}
+
+export type ResearchObjectPublication = {
+  articleId: string;
+  directory: string;
+  files: string[];
+  githubFiles: ResearchObjectFile[];
+};
+
+export function buildResearchObjectFiles(
   article: ArticleRecord
-) {
+): ResearchObjectFile[] {
   if (article.status !== "approved") {
     throw new Error(
       `Cannot publish article ${article.id}: article status is "${article.status}". Only approved articles can be published.`
@@ -150,42 +161,37 @@ export async function publishArticleResearchObject(
   const keyTakeaways = cleanText(article.keyTakeaways);
   const editorNotes = cleanText(article.editorNotes);
 
-  const folder = getApprovedArticleDir(article.id);
-
-  await fs.mkdir(folder, {
-    recursive: true,
-  });
-
   const metadata = buildMetadata(article);
 
-  await fs.writeFile(
-    path.join(folder, "metadata.yml"),
+  const files: ResearchObjectFile[] = [];
+
+  addFile(
+    files,
+    article.id,
+    "metadata.yml",
     dump(metadata, {
       noRefs: true,
       lineWidth: 120,
-    }),
-    "utf8"
+    })
   );
 
-  await fs.writeFile(
-    path.join(folder, "summary.md"),
-    `${summary}\n`,
-    "utf8"
-  );
-
-  await fs.writeFile(
-    path.join(folder, "article.md"),
-    `${articleContent}\n`,
-    "utf8"
-  );
-
-  const writtenFiles: string[] = [
-    "metadata.yml",
+  addFile(
+    files,
+    article.id,
     "summary.md",
-    "article.md",
-  ];
+    buildMarkdownContent(summary)
+  );
 
-  const optionalSections: Array<[string, string]> = [
+  addFile(
+    files,
+    article.id,
+    "article.md",
+    buildMarkdownContent(articleContent)
+  );
+
+  const optionalSections: Array<
+    [string, string]
+  > = [
     ["methodology.md", methodology],
     ["results.md", results],
     ["discussion.md", discussion],
@@ -195,25 +201,23 @@ export async function publishArticleResearchObject(
   ];
 
   for (const [filename, content] of optionalSections) {
-    if (
-      await writeOptionalMarkdown(
-        folder,
+    if (content) {
+      addFile(
+        files,
+        article.id,
         filename,
-        content
-      )
-    ) {
-      writtenFiles.push(filename);
+        buildMarkdownContent(content)
+      );
     }
   }
 
   if (editorNotes) {
-    await fs.writeFile(
-      path.join(folder, "founder_notes.md"),
-      `${editorNotes}\n`,
-      "utf8"
+    addFile(
+      files,
+      article.id,
+      "founder_notes.md",
+      buildMarkdownContent(editorNotes)
     );
-
-    writtenFiles.push("founder_notes.md");
   }
 
   if (article.sourcePmid || article.sourceDoi) {
@@ -223,7 +227,8 @@ export async function publishArticleResearchObject(
           pmid: article.sourcePmid,
           doi: article.sourceDoi,
           journal: article.sourceJournal,
-          publication_date: article.sourcePublicationDate,
+          publication_date:
+            article.sourcePublicationDate,
           publication_date_type:
             article.sourcePublicationDateType,
           url: buildSourceUrl(article),
@@ -231,21 +236,50 @@ export async function publishArticleResearchObject(
       ],
     };
 
-    await fs.writeFile(
-      path.join(folder, "citations.yml"),
+    addFile(
+      files,
+      article.id,
+      "citations.yml",
       dump(citation, {
         noRefs: true,
         lineWidth: 120,
-      }),
+      })
+    );
+  }
+
+  return files;
+}
+
+export async function publishArticleResearchObject(
+  article: ArticleRecord
+): Promise<ResearchObjectPublication> {
+  const githubFiles =
+    buildResearchObjectFiles(article);
+
+  const folder = getApprovedArticleDir(article.id);
+
+  await fs.mkdir(folder, {
+    recursive: true,
+  });
+
+  const writtenFiles: string[] = [];
+
+  for (const file of githubFiles) {
+    const filename = path.basename(file.path);
+
+    await fs.writeFile(
+      path.join(folder, filename),
+      file.content,
       "utf8"
     );
 
-    writtenFiles.push("citations.yml");
+    writtenFiles.push(filename);
   }
 
   return {
     articleId: article.id,
     directory: folder,
     files: writtenFiles,
+    githubFiles,
   };
 }

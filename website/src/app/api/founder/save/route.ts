@@ -1,25 +1,33 @@
+import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import * as yaml from "js-yaml";
+import {
+  requirePermission,
+  AuthenticationRequiredError,
+  PermissionDeniedError,
+} from "@/lib/auth/authorization";
 
 const ROOT = path.resolve(process.cwd(), "..");
 
 export async function POST(req: Request) {
-  const {
-    id,
-    notes,
-    summary,
-    timeline,
-  } = await req.json();
-
-  const folder = path.join(
-    ROOT,
-    "content",
-    "approved",
-    id
-  );
-
   try {
+    await requirePermission("articles.edit");
+
+    const {
+      id,
+      notes,
+      summary,
+      timeline,
+    } = await req.json();
+
+    const folder = path.join(
+      ROOT,
+      "content",
+      "approved",
+      id
+    );
+
     await fs.writeFile(
       path.join(folder, "founder_notes.md"),
       notes
@@ -31,21 +39,43 @@ export async function POST(req: Request) {
     );
 
     await fs.writeFile(
-  path.join(folder, "timeline.yml"),
-  yaml.dump({
-    timeline,
-  })
-);
+      path.join(folder, "timeline.yml"),
+      yaml.dump({
+        timeline,
+      })
+    );
 
-    return Response.json({
+    return NextResponse.json({
       success: true,
     });
-
   } catch (error) {
-    console.error(error);
+    if (error instanceof AuthenticationRequiredError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required.",
+        },
+        { status: 401 }
+      );
+    }
 
-    return Response.json(
-      { success: false },
+    if (error instanceof PermissionDeniedError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "You do not have permission to edit articles.",
+        },
+        { status: 403 }
+      );
+    }
+
+    console.error("Failed to save founder content:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Failed to save founder content.",
+      },
       { status: 500 }
     );
   }

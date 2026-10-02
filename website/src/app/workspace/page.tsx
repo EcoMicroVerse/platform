@@ -22,12 +22,26 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import EMVCard from "@/components/ui/EMVCard";
 import { loadPlatformHealth } from "@/lib/platformHealth";
 import WorkspacePlatformHealth from "@/components/workspace/WorkspacePlatformHealth";
-
 import { LayoutDashboard } from "lucide-react";
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth/authorization";
+import AccountMenu from "@/components/account/AccountMenu";
+
+
 
 export const dynamic = "force-dynamic";
 
 export default async function WorkspacePage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/sign-in?next=/workspace");
+  }
+
+  if (!user.permissions.includes("workspace.read")) {
+    redirect("/unauthorized");
+  }
+
   const health = await loadPlatformHealth();
   const inbox = await loadInbox();
   const approved = await loadApproved();
@@ -53,7 +67,15 @@ export default async function WorkspacePage() {
     <main className="min-h-screen bg-[#07121f] text-white">
       <div className="mx-auto max-w-7xl p-8">
 
-        <SectionHeader
+  <div className="mb-6 flex justify-end">
+    <AccountMenu
+      name={user.name}
+      email={user.email}
+      role={user.roles.map((role) => role.name).join(", ")}
+    />
+  </div>
+
+  <SectionHeader
           eyebrow="Editorial Workspace"
           title="Mission Control"
           description="The operational hub for publishing, AI assistance and platform health."

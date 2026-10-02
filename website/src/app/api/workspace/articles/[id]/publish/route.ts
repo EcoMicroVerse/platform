@@ -18,6 +18,12 @@ import {
   publishResearchObjectToGitHub,
 } from "@/lib/githubPublisher";
 
+import {
+  requirePermission,
+  AuthenticationRequiredError,
+  PermissionDeniedError,
+} from "@/lib/auth/authorization";
+
 type RouteContext = {
   params: Promise<{
     id: string;
@@ -29,6 +35,9 @@ export async function POST(
   { params }: RouteContext
 ): Promise<Response> {
   try {
+    await requirePermission("articles.publish");
+    await requirePermission("articles.read");
+
     const { id } = await params;
 
     if (!id) {
@@ -160,6 +169,27 @@ export async function POST(
         `/articles/${article.id}`,
     });
   } catch (error) {
+    if (error instanceof AuthenticationRequiredError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required.",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (error instanceof PermissionDeniedError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "You do not have permission to publish articles.",
+        },
+        { status: 403 }
+      );
+    }
+
     console.error(
       "Article publication failed:",
       error

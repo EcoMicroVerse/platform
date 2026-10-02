@@ -1,30 +1,70 @@
+import { NextResponse } from "next/server";
 import { repositorySearch } from "@/lib/founderSearch";
 import {
   findNodeByTitle,
   findConnectedPapers,
 } from "@/lib/graph";
+import {
+  requirePermission,
+  AuthenticationRequiredError,
+  PermissionDeniedError,
+} from "@/lib/auth/authorization";
 
 export async function POST(req: Request) {
-  const { query } = await req.json();
+  try {
+    await requirePermission("candidates.read");
 
-  const node = await findNodeByTitle(query);
+    const { query } = await req.json();
 
-  if (node) {
-    const papers = await findConnectedPapers(node.id);
+    const node = await findNodeByTitle(query);
 
-    if (papers.length) {
-      return Response.json({
-        results: papers.map((paper: any) => ({
-          source: "Graph",
-          title: paper.title,
-          collection: node.title,
-          priority: "connected",
-        })),
-      });
+    if (node) {
+      const papers = await findConnectedPapers(node.id);
+
+      if (papers.length) {
+        return NextResponse.json({
+          results: papers.map((paper: any) => ({
+            source: "Graph",
+            title: paper.title,
+            collection: node.title,
+            priority: "connected",
+          })),
+        });
+      }
     }
+
+    const results = await repositorySearch(query);
+
+    return NextResponse.json({ results });
+  } catch (error) {
+    if (error instanceof AuthenticationRequiredError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required.",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (error instanceof PermissionDeniedError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "You do not have permission to search candidates.",
+        },
+        { status: 403 }
+      );
+    }
+
+    console.error("Founder search failed:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Search failed.",
+      },
+      { status: 500 }
+    );
   }
-
-  const results = await repositorySearch(query);
-
-  return Response.json({ results });
 }

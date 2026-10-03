@@ -3,7 +3,7 @@ import path from "path";
 import { load } from "js-yaml";
 import type { ReviewItem, ApprovedItem } from "./types";
 
-const ROOT = path.resolve(process.cwd(), "..");
+const ROOT = process.cwd();
 
 export async function loadInbox(): Promise<ReviewItem[]> {
   const dir = path.join(ROOT, "content", "inbox");
@@ -116,12 +116,7 @@ export async function loadMomentum() {
 }
 
 export async function loadEditorialReadiness() {
-  const approvedDir = path.resolve(
-    process.cwd(),
-    "..",
-    "content",
-    "approved"
-  );
+  const approvedDir = path.join(ROOT, "content", "approved");
 
   const folders = await fs.readdir(approvedDir);
 

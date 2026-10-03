@@ -1,8 +1,10 @@
 
 import { GlassCard } from "@/components";
 import { brand } from "@/config/brand";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  await requireComingSoonAccess("/dashboard");
   return (
     <main className="min-h-screen px-6 py-12">
       <div className="mx-auto max-w-7xl">

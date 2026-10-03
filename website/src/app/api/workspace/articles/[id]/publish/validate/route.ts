@@ -5,6 +5,12 @@ import {
   validateArticleForPublication,
 } from "@/lib/articlePublicationValidation";
 
+import {
+  requirePermission,
+  AuthenticationRequiredError,
+  PermissionDeniedError,
+} from "@/lib/auth/authorization";
+
 type RouteContext = {
   params: Promise<{
     id: string;
@@ -16,6 +22,8 @@ export async function GET(
   context: RouteContext
 ): Promise<Response> {
   try {
+    await requirePermission("articles.read");
+
     const { id } = await context.params;
 
     if (!id) {
@@ -34,7 +42,7 @@ export async function GET(
       return NextResponse.json(
         {
           success: false,
-          error: `Article not found: ${id}`,
+          error: "Article not found.",
         },
         { status: 404 }
       );
@@ -76,6 +84,31 @@ export async function GET(
       fields: validation.fields,
     });
   } catch (error) {
+    if (
+      error instanceof AuthenticationRequiredError
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required.",
+        },
+        { status: 401 }
+      );
+    }
+
+    if (
+      error instanceof PermissionDeniedError
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "You do not have permission to read articles.",
+        },
+        { status: 403 }
+      );
+    }
+
     console.error(
       "Article publication validation failed:",
       error
@@ -85,9 +118,7 @@ export async function GET(
       {
         success: false,
         error:
-          error instanceof Error
-            ? error.message
-            : "Unknown validation error.",
+          "Unable to validate article for publication.",
       },
       { status: 500 }
     );

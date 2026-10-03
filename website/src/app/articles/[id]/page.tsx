@@ -17,6 +17,7 @@ import TimelineIntelligence from "@/components/public/TimelineIntelligence";
 import PublicationHistory from "@/components/public/PublicationHistory";
 import ResearchAssistant from "@/components/public/ResearchAssistant"
 import { createMarkdownComponents } from "@/components/entities/MarkdownComponents";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 import SemanticRelatedSection from "@/components/public/SemanticRelatedSection";
 import { getSemanticRelated } from "@/lib/semanticRelated";
 
@@ -28,6 +29,8 @@ type Props = {
 
 export default async function ArticlePage({ params }: Props) {
   const { id } = await params;
+  await requireComingSoonAccess(`/articles/${id}`);
+
 
   const data = await loadArticle(id);
 

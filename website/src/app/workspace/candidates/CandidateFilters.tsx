@@ -46,13 +46,18 @@ type CandidateFiltersProps = {
   candidates: ResearchCandidate[];
   decisions: Record<string, CandidateDecision>;
   articles: Record<string, ArticleRecord>;
+  canReviewCandidates: boolean;
+  canReadArticles: boolean;
+  canCreateArticles: boolean;
 };
-
 
 export default function CandidateFilters({
   candidates,
   decisions,
   articles,
+  canReviewCandidates,
+  canReadArticles,
+  canCreateArticles,
 }: CandidateFiltersProps) {
   const [relevanceFilter, setRelevanceFilter] =
     useState<RelevanceFilter>("all");
@@ -191,11 +196,18 @@ export default function CandidateFilters({
       ) : (
         filteredCandidates.map((candidate) => (
           <CandidateCard
-  key={candidate.id}
-  candidate={candidate}
-  decision={decisions[candidate.id]}
-  article={articles[candidate.id]}
-/>
+            key={candidate.id}
+            candidate={candidate}
+            decision={decisions[candidate.id]}
+            article={
+              canReadArticles
+                ? articles[candidate.id]
+                : undefined
+            }
+            canReviewCandidates={canReviewCandidates}
+            canReadArticles={canReadArticles}
+            canCreateArticles={canCreateArticles}
+          />
         ))
       )}
     </div>

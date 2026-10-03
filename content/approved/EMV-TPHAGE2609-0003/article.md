@@ -1,33 +1,38 @@
-# Platelet-phage conjugates for targeted therapy of acute bacterial pneumonia
+# Platelet-phage conjugates for targeted therapy of acute bacterial pneumonia.
 
 ## Executive Summary
 
-Antibiotic resistance is driving interest in phage therapy as a selective approach for treating bacterial infections. However, rapid systemic clearance and limited tissue targeting can restrict therapeutic effectiveness.
+Platelet-phage conjugates (PPCs) are presented as a targeted delivery platform designed to overcome rapid systemic clearance and limited tissue targeting of therapeutic phages. By conjugating phages to platelets, PPCs exploit platelet inflammatory tropism to localize within infected lung tissue. The study reports increased accumulation at pulmonary infection sites, extended circulation half-life, and effective treatment of bacterial pneumonia in mice.
 
-This study develops platelet-phage conjugates (PPCs) as a biologically guided delivery platform for bacterial pneumonia. The approach harnesses the natural inflammatory tropism of platelets to direct phages toward sites of infection.
-
-PPCs demonstrated increased localization within infected lung tissue and extended circulation. Interactions with the infection environment and bacteria also triggered platelet activation and release of platelet-derived microparticles, facilitating localized release of conjugated phages.
-
-In a mouse model of bacterial pneumonia, PPC treatment effectively treated bacterial infection, supporting platelet-mediated delivery as a potential strategy for improving targeted phage therapy.
+---
 
 ## Why This Matters
 
-The therapeutic potential of bacteriophages is partly limited by challenges associated with systemic delivery, including rapid clearance and insufficient localization at infected tissues. PPCs address these challenges by using platelets as biological carriers capable of responding to inflammatory signals and accumulating at infectious sites.
+This research contributes to the field of **TPHAGE** and was prioritised by EcoMicroVerse because it aligns with our scientific intelligence pipeline.
 
-## Key Findings
+---
 
-- Phages were conjugated to platelet carriers to generate platelet-phage conjugates.
-- PPCs showed increased accumulation in infected lung regions.
-- PPCs extended the circulation half-life of the delivered phages.
-- Infection-associated platelet activation promoted release of conjugated phages.
-- PPCs effectively treated bacterial pneumonia in mice.
+## Key Highlights
 
-## Editorial Perspective
+- Priority: **low**
+- EMV Score: **19**
+- Collection: **TPHAGE**
+- Publication Type: **paper**
 
-The study demonstrates a targeted delivery strategy that combines the antibacterial properties of phages with the natural inflammatory targeting properties of platelets. The findings provide a potential framework for improving phage localization at sites of bacterial infection while addressing some limitations of systemic phage administration.
+---
 
-## Source
+## Founder Editorial Note
 
-Original publication: Biomaterials
-PMID: 42636550
-DOI: 10.1016/j.biomaterials.2026.124564
+EDITORIAL WORKSPACE PERSISTENCE TEST — 30 September 2026
+
+---
+
+## Continue Exploring
+
+This article includes an AI-generated Reading Companion, Citation Trail, and Family Tree inside EcoMicroVerse.
+
+---
+
+## Citation
+
+Original source: https://doi.org/10.1016/j.biomaterials.2026.124564

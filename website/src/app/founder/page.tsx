@@ -22,6 +22,7 @@ import {
 } from "@/lib/dashboard";
 
 import { loadArticle } from "@/lib/public";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
@@ -69,6 +70,7 @@ import EditorialQualityPanel from "@/components/dashboard/EditorialQualityPanel"
 import EditorialWorkspace from "@/components/dashboard/EditorialWorkspace";
 
 export default async function FounderPage() {
+  await requireComingSoonAccess("/founder");
   const inbox = await loadInbox();
   const approved = await loadApproved();
   const timeline = await loadTimeline();

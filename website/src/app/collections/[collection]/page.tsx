@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 import { loadCollection } from "@/lib/public";
 
 type Props = {
@@ -9,6 +10,8 @@ type Props = {
 
 export default async function CollectionPage({ params }: Props) {
   const { collection } = await params;
+  await requireComingSoonAccess(`/collections/${collection}`);
+
 
   const data = await loadCollection(collection);
 

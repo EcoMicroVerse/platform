@@ -18,9 +18,13 @@ import {
 
 import { generateEmvId } from "@/lib/emvIdStore";
 
+import { requirePermission } from "@/lib/auth/authorization";
+
 export async function getCandidateArticleStatus(
   candidateId: string
 ) {
+  await requirePermission("articles.read");
+
   const article = await getArticleByCandidateId(candidateId);
 
   if (!article) {
@@ -42,14 +46,43 @@ export async function updateCandidateStatus(
   candidateId: string,
   status: CandidateStatus
 ) {
+  await requirePermission("candidates.review");
+
   if (!candidateId) {
     throw new Error("Candidate ID is required.");
+  }
+
+  const currentDecision =
+    await getCandidateDecision(candidateId);
+
+  const currentStatus = currentDecision.status;
+
+  const allowedTransitions: Record<
+    CandidateStatus,
+    CandidateStatus[]
+  > = {
+    discovered: ["reviewed"],
+    reviewed: ["approved", "rejected"],
+    approved: [],
+    rejected: [],
+  };
+
+  const allowedNextStatuses =
+    allowedTransitions[currentStatus];
+
+  if (!allowedNextStatuses.includes(status)) {
+    throw new Error(
+      `Candidate status transition from "${currentStatus}" to "${status}" is not permitted.`
+    );
   }
 
   const { setCandidateStatus } =
     await import("@/lib/candidateStore");
 
-  return setCandidateStatus(candidateId, status);
+  return setCandidateStatus(
+    candidateId,
+    status
+  );
 }
 
 export async function createArticleDraft(
@@ -61,7 +94,9 @@ export async function createArticleDraft(
     journal: string;
     publicationDate: string;
     publicationDateType:
-      "electronic" | "issue" | "unknown";
+      | "electronic"
+      | "issue"
+      | "unknown";
     abstract: string;
 
     relevanceScore: number;
@@ -70,6 +105,8 @@ export async function createArticleDraft(
   },
   collection: ArticleCollection
 ): Promise<ArticleRecord> {
+  await requirePermission("articles.create");
+
   if (!candidate.id) {
     throw new Error("Candidate ID is required.");
   }
@@ -139,6 +176,7 @@ export async function saveArticleDraft(
   articleId: string,
   input: SaveArticleDraftInput
 ): Promise<ArticleRecord> {
+  await requirePermission("articles.edit");
   const article = await getArticleById(articleId);
 
   if (!article) {
@@ -176,36 +214,76 @@ export async function saveArticleDraft(
 
 export async function updateArticleEditorialStatus(
   articleId: string,
-  nextStatus: ArticleStatus
+  nextStatus: ArticleStatus,
 ): Promise<ArticleRecord> {
+  // --------------------------------------------------
+  // Load current article
+  // --------------------------------------------------
+
   const article = await getArticleById(articleId);
 
   if (!article) {
-    throw new Error(`Article not found: ${articleId}`);
+    throw new Error("Article not found.");
   }
 
-  const allowedTransitions: Record<
-    ArticleStatus,
-    ArticleStatus[]
-  > = {
-    draft: ["review"],
-    review: ["draft", "approved"],
-    approved: ["review"],
-    published: [],
-    archived: [],
-  };
+  const currentStatus = article.status;
+
+  // --------------------------------------------------
+  // Determine the permission required for the
+  // requested editorial transition
+  // --------------------------------------------------
+
+  let requiredPermission:
+    | "articles.review"
+    | "articles.approve"
+    | null = null;
 
   if (
-    !allowedTransitions[article.status].includes(
-      nextStatus
-    )
+    currentStatus === "draft" &&
+    nextStatus === "review"
   ) {
+    requiredPermission = "articles.review";
+  } else if (
+    currentStatus === "review" &&
+    nextStatus === "draft"
+  ) {
+    requiredPermission = "articles.review";
+  } else if (
+    currentStatus === "review" &&
+    nextStatus === "approved"
+  ) {
+    requiredPermission = "articles.approve";
+  } else if (
+    currentStatus === "approved" &&
+    nextStatus === "review"
+  ) {
+    requiredPermission = "articles.review";
+  }
+
+  // --------------------------------------------------
+  // Reject unsupported transitions
+  // --------------------------------------------------
+
+  if (!requiredPermission) {
     throw new Error(
-      `Cannot change article status from ${article.status} to ${nextStatus}.`
+      `Editorial transition from "${currentStatus}" to "${nextStatus}" is not permitted.`,
     );
   }
 
-  return updateArticleStatus(articleId, nextStatus);
+  // --------------------------------------------------
+  // Enforce permission server-side
+  // --------------------------------------------------
+
+  await requirePermission(requiredPermission);
+
+  // --------------------------------------------------
+  // Update article status
+  // --------------------------------------------------
+
+  return updateArticleStatus(
+    articleId,
+    nextStatus,
+  );
 }
 
 export async function hydrateArticleSource(
@@ -219,6 +297,7 @@ export async function hydrateArticleSource(
     abstract: string;
   }
 ): Promise<ArticleRecord> {
+  await requirePermission("articles.edit");
   const article = await getArticleById(articleId);
 
   if (!article) {

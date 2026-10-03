@@ -8,30 +8,66 @@ import {
   PermissionDeniedError,
 } from "@/lib/auth/authorization";
 
-const ROOT = path.resolve(process.cwd(), "..");
+import {
+  requireSafePathSegment,
+} from "@/lib/emvIdStore";
+
+const APPROVED_DIR = path.join(
+  process.cwd(),
+  "content",
+  "approved"
+);
 
 export async function POST(req: Request) {
   try {
     await requirePermission("articles.edit");
 
     const {
-      id,
-      notes,
-      summary,
-      timeline,
-    } = await req.json();
+  id: rawId,
+  notes,
+  summary,
+  timeline,
+} = await req.json();
+
+const id = requireSafePathSegment(
+  rawId,
+  "Article ID"
+);
+
+if (typeof notes !== "string") {
+  throw new Error(
+    "Founder notes must be a string."
+  );
+}
+
+if (typeof summary !== "string") {
+  throw new Error(
+    "Article summary must be a string."
+  );
+}
+
+if (
+  timeline === null ||
+  typeof timeline !== "object"
+) {
+  throw new Error(
+    "Timeline must be an object."
+  );
+}
 
     const folder = path.join(
-      ROOT,
-      "content",
-      "approved",
-      id
-    );
+  APPROVED_DIR,
+  id
+);
 
-    await fs.writeFile(
-      path.join(folder, "founder_notes.md"),
-      notes
-    );
+await fs.mkdir(folder, {
+  recursive: true,
+});
+
+await fs.writeFile(
+  path.join(folder, "founder_notes.md"),
+  notes
+);
 
     await fs.writeFile(
       path.join(folder, "summary.md"),

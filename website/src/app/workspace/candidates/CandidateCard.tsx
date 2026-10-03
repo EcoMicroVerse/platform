@@ -15,6 +15,9 @@ type CandidateCardProps = {
   candidate: ResearchCandidate;
   decision?: CandidateDecision;
   article?: ArticleRecord;
+  canReviewCandidates: boolean;
+  canReadArticles: boolean;
+  canCreateArticles: boolean;
 };
 
 function formatPublicationDate(date: string): string {
@@ -287,6 +290,9 @@ export default function CandidateCard({
   candidate,
   decision,
   article,
+  canReviewCandidates,
+  canReadArticles,
+  canCreateArticles,
 }: CandidateCardProps) {
   const [status, setStatus] =
     useState<ResearchCandidate["status"]>(
@@ -315,24 +321,29 @@ export default function CandidateCard({
   );
 
   useEffect(() => {
-    let active = true;
+  if (!canReadArticles) {
+    setArticleState(null);
+    return;
+  }
 
-    getCandidateArticleStatus(candidate.id)
-      .then((result) => {
-        if (active) {
-          setArticleState(result);
-        }
-      })
-      .catch(() => {
-        if (active) {
-          setArticleState(null);
-        }
-      });
+  let active = true;
 
-    return () => {
-      active = false;
-    };
-  }, [candidate.id]);
+  getCandidateArticleStatus(candidate.id)
+    .then((result) => {
+      if (active) {
+        setArticleState(result);
+      }
+    })
+    .catch(() => {
+      if (active) {
+        setArticleState(null);
+      }
+    });
+
+  return () => {
+    active = false;
+  };
+}, [candidate.id, canReadArticles]);
 
   const [collection, setCollection] =
     useState<ArticleCollection>(
@@ -645,7 +656,8 @@ export default function CandidateCard({
 
   {/* Candidate editorial actions are hidden once the linked
       EcoMicroVerse article has been published. */}
-  {articleState?.status !== "published" && (
+  {canReviewCandidates &&
+    articleState?.status !== "published" && (
     <>
       {status === "discovered" && (
         <button
@@ -692,7 +704,8 @@ export default function CandidateCard({
 </div>
       </div>
 
-      {status === "approved" && !articleState && (
+      {canCreateArticles &&
+        status === "approved" && !articleState && (
         <div className="mt-6 rounded-xl border border-teal-200 bg-teal-50 p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
@@ -782,7 +795,7 @@ export default function CandidateCard({
         </div>
       )}
 
-      {articleState && (
+      {canReadArticles && articleState && (
         <div className="mt-6 rounded-xl border border-teal-500/20 bg-teal-500/5 p-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { getArticleById } from "@/lib/articleStore";
+import { getCurrentUser } from "@/lib/auth/authorization";
 import ArticleDraftEditor from "./ArticleDraftEditor";
 
 type ArticleDraftPageProps = {
@@ -15,11 +16,53 @@ export default async function ArticleDraftPage({
 }: ArticleDraftPageProps) {
   const { id } = await params;
 
+  // --------------------------------------------------
+  // Authentication
+  // --------------------------------------------------
+
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect(`/sign-in?next=/workspace/articles/${id}`);
+  }
+
+  // --------------------------------------------------
+  // Article read permission
+  // --------------------------------------------------
+
+  if (!user.permissions.includes("articles.read")) {
+    redirect("/unauthorized");
+  }
+
+  // --------------------------------------------------
+  // Editorial permissions
+  // --------------------------------------------------
+
+  const canEditArticles =
+    user.permissions.includes("articles.edit");
+
+  const canReviewArticles =
+    user.permissions.includes("articles.review");
+
+  const canApproveArticles =
+    user.permissions.includes("articles.approve");
+
+  const canPublishArticles =
+    user.permissions.includes("articles.publish");
+
+  // --------------------------------------------------
+  // Load article
+  // --------------------------------------------------
+
   const article = await getArticleById(id);
 
   if (!article) {
     notFound();
   }
+
+  // --------------------------------------------------
+  // Page
+  // --------------------------------------------------
 
   return (
     <main className="min-h-screen bg-[#07121f] px-4 py-8 text-white sm:px-6 lg:px-8">
@@ -48,7 +91,13 @@ export default async function ArticleDraftPage({
           </div>
         </div>
 
-        <ArticleDraftEditor article={article} />
+        <ArticleDraftEditor
+          article={article}
+          canEditArticles={canEditArticles}
+          canReviewArticles={canReviewArticles}
+          canApproveArticles={canApproveArticles}
+          canPublishArticles={canPublishArticles}
+        />
       </div>
     </main>
   );

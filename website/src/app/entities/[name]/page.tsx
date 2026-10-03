@@ -3,6 +3,7 @@ import { getEntityInfo } from "@/lib/entityIntelligence";
 import { getEntityTimeline } from "@/lib/entityTimeline";
 import EntityTimelineSection from "@/components/entities/EntityTimelineSection";
 import { notFound } from "next/navigation";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 
 type Props = {
   params: Promise<{
@@ -14,6 +15,8 @@ export default async function EntityPage({
   params,
 }: Props) {
   const { name } = await params;
+  await requireComingSoonAccess(`/entities/${name}`);
+
 
   const entity =
     await getEntityInfo(name);

@@ -8,15 +8,32 @@ import {
   PermissionDeniedError,
 } from "@/lib/auth/authorization";
 
-const ROOT = path.resolve(process.cwd(), "..");
+import {
+  requireSafePathSegment,
+} from "@/lib/emvIdStore";
+
+const APPROVED_DIR = path.join(
+  process.cwd(),
+  "content",
+  "approved"
+);
 
 export async function POST(req: Request) {
   try {
     await requirePermission("articles.read");
 
-    const { id } = await req.json();
+    const { id: rawId } =
+  await req.json();
 
-    const folder = path.join(ROOT, "content", "approved", id);
+const id = requireSafePathSegment(
+  rawId,
+  "Article ID"
+);
+
+    const folder = path.join(
+  APPROVED_DIR,
+  id
+);
 
     const metadata = yaml.load(
       await fs.readFile(

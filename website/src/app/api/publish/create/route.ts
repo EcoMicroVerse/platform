@@ -7,26 +7,43 @@ import {
   PermissionDeniedError,
 } from "@/lib/auth/authorization";
 
+import {
+  requireSafePathSegment,
+} from "@/lib/emvIdStore";
+
 export async function POST(request: Request) {
   try {
     await requirePermission("articles.edit");
 
     const body = await request.json();
 
-    const jobsDir = path.resolve(
+    const id = requireSafePathSegment(
+  body.id,
+  "Publication job ID"
+);
+
+if (
+  typeof body.title !== "string" ||
+  !body.title.trim()
+) {
+  throw new Error(
+    "Publication job title is required."
+  );
+}
+
+    const jobsDir = path.join(
       process.cwd(),
-      "..",
       "content",
       "publication_jobs"
-    );
+);
 
     await fs.mkdir(jobsDir, { recursive: true });
 
     const timestamp = new Date().toISOString();
 
     const job = {
-      id: body.id,
-      title: body.title,
+      id,
+      title: body.title.trim(),
       status: "draft",
       created: timestamp,
       updated: timestamp,
@@ -40,7 +57,7 @@ export async function POST(request: Request) {
     };
 
     await fs.writeFile(
-      path.join(jobsDir, `${body.id}.json`),
+      path.join(jobsDir, `${id}.json`),
       JSON.stringify(job, null, 2)
     );
 

@@ -2,17 +2,24 @@ import fs from "fs/promises";
 import path from "path";
 import { load } from "js-yaml";
 import { loadGraph } from "./graph";
+import { getAllArticles } from "./articleStore";
 
 const ROOT = path.resolve(process.cwd(), "..");
 
 export async function loadPublicHomepage() {
   const approvedDir = path.join(ROOT, "content", "approved");
 
-  const folders = await fs.readdir(approvedDir);
+  const publishedArticles = (
+    await getAllArticles()
+  ).filter(
+    (article) => article.status === "published"
+  );
 
   const articles: any[] = [];
 
-  for (const folder of folders) {
+  for (const article of publishedArticles) {
+    const folder = article.id;
+
     const metadataPath = path.join(
       approvedDir,
       folder,
@@ -33,7 +40,10 @@ export async function loadPublicHomepage() {
       let summary = "";
 
       try {
-        summary = await fs.readFile(summaryPath, "utf8");
+        summary = await fs.readFile(
+          summaryPath,
+          "utf8"
+        );
       } catch {}
 
       articles.push({
@@ -52,7 +62,9 @@ export async function loadPublicHomepage() {
     latest: articles.slice(0, 6),
     collections: [
       ...new Set(
-        articles.map((a) => a.recommended_collection)
+        articles.map(
+          (a) => a.recommended_collection
+        )
       ),
     ],
     articles,

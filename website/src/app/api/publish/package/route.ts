@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
+
 import {
   requirePermission,
   AuthenticationRequiredError,
   PermissionDeniedError,
 } from "@/lib/auth/authorization";
+
+import { requireSafePathSegment } from "@/lib/emvIdStore";
 
 export async function POST(request: Request) {
   try {
@@ -13,49 +16,64 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    const jobsDir = path.resolve(
+    const id = requireSafePathSegment(
+      body.id,
+      "Publication package ID"
+    );
+
+    if (
+      typeof body.title !== "string" ||
+      !body.title.trim()
+    ) {
+      throw new Error(
+        "Publication package title is required."
+      );
+    }
+
+    const title = body.title.trim();
+
+    const jobsDir = path.join(
       process.cwd(),
-      "..",
       "content",
       "publication_jobs"
-    );
+);
 
     await fs.mkdir(jobsDir, { recursive: true });
 
     const timestamp = new Date().toISOString();
 
     const publication = {
-      id: body.id,
-      title: body.title,
+      id,
+      title,
       status: "draft",
       created: timestamp,
       updated: timestamp,
 
       channels: {
         website: {
-          title: body.title,
+          title,
         },
 
         newsletter: {
-          subject: `EcoMicroVerse • ${body.title}`,
+          subject: `EcoMicroVerse • ${title}`,
         },
 
         linkedin: {
-          text: `${body.title}\n\nRead more on EcoMicroVerse.`,
+          text: `${title}\n\nRead more on EcoMicroVerse.`,
         },
 
         bluesky: {
-          text: `${body.title}`,
+          text: title,
         },
 
         x: {
-          text: body.title,
+          text: title,
         },
       },
     };
 
     await fs.writeFile(
-      path.join(jobsDir, `${body.id}.json`),
+      path.join(jobsDir, `${id}.json`),
       JSON.stringify(publication, null, 2)
     );
 
@@ -78,13 +96,17 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          error: "You do not have permission to create publication packages.",
+          error:
+            "You do not have permission to create publication packages.",
         },
         { status: 403 }
       );
     }
 
-    console.error("Failed to create publication package:", error);
+    console.error(
+      "Failed to create publication package:",
+      error
+    );
 
     return NextResponse.json(
       {

@@ -1,8 +1,10 @@
 import GraphExplorer from "@/components/graph/GraphExplorer";
 import { loadGraph } from "@/lib/graph";
 import { getAllEntities } from "@/lib/entityIntelligence";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 
 export default async function GraphPage() {
+  await requireComingSoonAccess("/graph");
   const graph = await loadGraph();
   const entities = await getAllEntities();
 

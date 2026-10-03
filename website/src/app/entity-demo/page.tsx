@@ -1,7 +1,9 @@
 
 import EntityLink from "@/components/entities/EntityLink";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 
-export default function Demo() {
+export default async function Demo() {
+  await requireComingSoonAccess("/entity-demo");
   return (
     <main className="min-h-screen bg-[#07121f] text-white">
 

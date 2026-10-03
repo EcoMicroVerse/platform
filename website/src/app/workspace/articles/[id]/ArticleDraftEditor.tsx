@@ -14,6 +14,10 @@ import {
 
 type ArticleDraftEditorProps = {
   article: ArticleRecord;
+  canEditArticles: boolean;
+  canReviewArticles: boolean;
+  canApproveArticles: boolean;
+  canPublishArticles: boolean;
 };
 
 type EditableField =
@@ -70,12 +74,14 @@ function Field({
   onChange,
   rows = 6,
   placeholder,
+  disabled = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   rows?: number;
   placeholder?: string;
+  disabled?: boolean;
 }) {
   return (
     <div>
@@ -90,7 +96,8 @@ function Field({
         }
         rows={rows}
         placeholder={placeholder}
-        className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm leading-6 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20"
+        disabled={disabled}
+        className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm leading-6 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 disabled:cursor-not-allowed disabled:opacity-60"
       />
     </div>
   );
@@ -98,6 +105,10 @@ function Field({
 
 export default function ArticleDraftEditor({
   article,
+  canEditArticles,
+  canReviewArticles,
+  canApproveArticles,
+  canPublishArticles,
 }: ArticleDraftEditorProps) {
   const [form, setForm] =
     useState<SaveArticleDraftInput>({
@@ -140,6 +151,10 @@ export default function ArticleDraftEditor({
   }
 
   async function handleSave() {
+    if (!canEditArticles) {
+      return;
+    }
+
     setSaving(true);
     setMessage("");
     setError("");
@@ -193,7 +208,10 @@ export default function ArticleDraftEditor({
   }
 
   async function handlePublish() {
-    if (articleStatus !== "approved") {
+    if (
+      !canPublishArticles ||
+      articleStatus !== "approved"
+    ) {
       return;
     }
 
@@ -283,14 +301,16 @@ export default function ArticleDraftEditor({
             </span>
           )}
 
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving}
-            className="rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {saving ? "Saving…" : "Save Draft"}
-          </button>
+          {canEditArticles && (
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving}
+              className="rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {saving ? "Saving…" : "Save Draft"}
+            </button>
+          )}
         </div>
       </div>
 
@@ -399,80 +419,89 @@ export default function ArticleDraftEditor({
           </div>
 
           <div className="flex flex-wrap gap-3">
-            {articleStatus === "draft" && (
-              <button
-                type="button"
-                onClick={() =>
-                  handleStatusChange("review")
-                }
-                disabled={statusSaving}
-                className="rounded-xl border border-slate-600 bg-slate-800 px-4 py-2.5 text-sm font-semibold text-slate-100 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {statusSaving
-                  ? "Updating…"
-                  : "Send to Review"}
-              </button>
-            )}
-
-            {articleStatus === "review" && (
-              <>
+            {articleStatus === "draft" &&
+              canReviewArticles && (
                 <button
                   type="button"
                   onClick={() =>
-                    handleStatusChange("draft")
+                    handleStatusChange("review")
                   }
                   disabled={statusSaving}
-                  className="rounded-xl border border-slate-700 bg-transparent px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Return to Draft
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleStatusChange(
-                      "approved"
-                    )
-                  }
-                  disabled={statusSaving}
-                  className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-xl border border-slate-600 bg-slate-800 px-4 py-2.5 text-sm font-semibold text-slate-100 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {statusSaving
                     ? "Updating…"
-                    : "Approve Article"}
+                    : "Send to Review"}
                 </button>
+              )}
+
+            {articleStatus === "review" && (
+              <>
+                {canReviewArticles && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleStatusChange("draft")
+                    }
+                    disabled={statusSaving}
+                    className="rounded-xl border border-slate-700 bg-transparent px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Return to Draft
+                  </button>
+                )}
+
+                {canApproveArticles && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleStatusChange(
+                        "approved"
+                      )
+                    }
+                    disabled={statusSaving}
+                    className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {statusSaving
+                      ? "Updating…"
+                      : "Approve Article"}
+                  </button>
+                )}
               </>
             )}
 
             {articleStatus === "approved" && (
               <>
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleStatusChange(
-                      "review"
-                    )
-                  }
-                  disabled={
-                    statusSaving || publishing
-                  }
-                  className="rounded-xl border border-slate-700 bg-transparent px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Return to Review
-                </button>
+                {canReviewArticles && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleStatusChange(
+                        "review"
+                      )
+                    }
+                    disabled={
+                      statusSaving || publishing
+                    }
+                    className="rounded-xl border border-slate-700 bg-transparent px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Return to Review
+                  </button>
+                )}
 
-                <button
-                  type="button"
-                  onClick={handlePublish}
-                  disabled={
-                    publishing || statusSaving
-                  }
-                  className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {publishing
-                    ? "Publishing…"
-                    : "Publish Article"}
-                </button>
+                {canPublishArticles && (
+                  <button
+                    type="button"
+                    onClick={handlePublish}
+                    disabled={
+                      publishing || statusSaving
+                    }
+                    className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {publishing
+                      ? "Publishing…"
+                      : "Publish Article"}
+                  </button>
+                )}
               </>
             )}
 
@@ -594,7 +623,8 @@ export default function ArticleDraftEditor({
                   event.target.value
                 )
               }
-              className="w-full rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-base font-medium text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20"
+              disabled={!canEditArticles}
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-base font-medium text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 disabled:cursor-not-allowed disabled:opacity-60"
             />
           </div>
 
@@ -606,6 +636,7 @@ export default function ArticleDraftEditor({
             }
             rows={7}
             placeholder="Write a concise research summary."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -619,6 +650,7 @@ export default function ArticleDraftEditor({
             }
             rows={8}
             placeholder="Describe the methods, study design, datasets, experiments or analytical approaches."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -629,6 +661,7 @@ export default function ArticleDraftEditor({
             }
             rows={8}
             placeholder="Record the main findings supported by the source."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -642,6 +675,7 @@ export default function ArticleDraftEditor({
             }
             rows={8}
             placeholder="Interpret the findings while keeping claims aligned with the source evidence."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -655,6 +689,7 @@ export default function ArticleDraftEditor({
             }
             rows={6}
             placeholder="Record limitations identified in the source or during editorial review."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -668,6 +703,7 @@ export default function ArticleDraftEditor({
             }
             rows={6}
             placeholder="Potential future directions supported by the research."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -681,6 +717,7 @@ export default function ArticleDraftEditor({
             }
             rows={6}
             placeholder="Capture the most important takeaways for readers."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -694,6 +731,7 @@ export default function ArticleDraftEditor({
             }
             rows={16}
             placeholder="Main article body. Markdown can be used here."
+            disabled={!canEditArticles}
           />
 
           <Field
@@ -707,23 +745,26 @@ export default function ArticleDraftEditor({
             }
             rows={6}
             placeholder="Private editorial notes, questions, checks and follow-up items."
+            disabled={!canEditArticles}
           />
         </div>
       </section>
 
       {/* Bottom save */}
-      <div className="flex justify-end border-t border-slate-800 pt-6">
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={saving}
-          className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {saving
-            ? "Saving…"
-            : "Save Draft"}
-        </button>
-      </div>
+      {canEditArticles && (
+        <div className="flex justify-end border-t border-slate-800 pt-6">
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={saving}
+            className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {saving
+              ? "Saving…"
+              : "Save Draft"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

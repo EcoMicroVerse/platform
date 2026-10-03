@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local backups and generated working data
+/backups/
+/content/candidates/
+/content/publication_jobs/

@@ -18,6 +18,10 @@ import {
 
 import CandidateFilters from "./CandidateFilters";
 
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth/authorization";
+
+
 function formatPublicationDate(
   date: string
 ): string {
@@ -35,6 +39,25 @@ function formatPublicationDate(
 }
 
 export default async function CandidatesPage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/sign-in?next=/workspace/candidates");
+  }
+
+  if (!user.permissions.includes("candidates.read")) {
+    redirect("/unauthorized");
+  }
+
+  const canReviewCandidates =
+    user.permissions.includes("candidates.review");
+
+  const canReadArticles =
+    user.permissions.includes("articles.read");
+
+  const canCreateArticles =
+    user.permissions.includes("articles.create");
+
   let candidates: ResearchCandidate[] = [];
   let decisions: Record<
     string,
@@ -63,14 +86,16 @@ export default async function CandidatesPage() {
     );
   }
 
-  try {
-    articles =
-      await getAllArticles();
-  } catch (err) {
-    console.error(
-      "Unable to load article records:",
-      err
-    );
+    if (canReadArticles) {
+    try {
+      articles =
+        await getAllArticles();
+    } catch (err) {
+      console.error(
+        "Unable to load article records:",
+        err
+      );
+    }
   }
 
   /**
@@ -182,10 +207,13 @@ export default async function CandidatesPage() {
       )}
 
       <CandidateFilters
-        candidates={candidates}
-        decisions={decisions}
-        articles={articlesByCandidateId}
-      />
+  candidates={candidates}
+  decisions={decisions}
+  articles={articlesByCandidateId}
+  canReviewCandidates={canReviewCandidates}
+  canReadArticles={canReadArticles}
+  canCreateArticles={canCreateArticles}
+/>
     </main>
   );
 }

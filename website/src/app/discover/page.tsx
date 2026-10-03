@@ -3,6 +3,7 @@ import fs from "fs/promises";
 import path from "path";
 import { load } from "js-yaml";
 import Link from "next/link";
+import { requireComingSoonAccess } from "@/lib/comingSoon";
 import { Calendar, Flame, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +35,7 @@ async function loadDiscoveries() {
 }
 
 export default async function DiscoverPage() {
+  await requireComingSoonAccess("/discover");
   const discoveries = await loadDiscoveries();
 
   return (

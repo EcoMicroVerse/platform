@@ -2,13 +2,19 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { load, dump } from "js-yaml";
+
 import {
   requirePermission,
   AuthenticationRequiredError,
   PermissionDeniedError,
 } from "@/lib/auth/authorization";
 
-const ROOT = path.resolve(process.cwd(), "..");
+const SCHEDULER_FILE = path.join(
+  process.cwd(),
+  "content",
+  "scheduler",
+  "queue.yml"
+);
 
 export async function POST(request: Request) {
   try {
@@ -16,14 +22,41 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    const file = path.join(
-      ROOT,
-      "content",
-      "scheduler",
-      "queue.yml"
-    );
+    if (
+      typeof body.date !== "string" ||
+      Number.isNaN(
+        new Date(body.date).getTime()
+      )
+    ) {
+      throw new Error(
+        "A valid scheduler date is required."
+      );
+    }
 
-    const text = await fs.readFile(file, "utf8");
+    if (
+      typeof body.type !== "string" ||
+      !body.type.trim()
+    ) {
+      throw new Error(
+        "Scheduler item type is required."
+      );
+    }
+
+    if (
+      typeof body.title !== "string" ||
+      !body.title.trim()
+    ) {
+      throw new Error(
+        "Scheduler item title is required."
+      );
+    }
+
+    const file = SCHEDULER_FILE;
+
+    const text = await fs.readFile(
+      file,
+      "utf8"
+    );
 
     const data = load(text) as {
       queue: any[];
@@ -31,9 +64,9 @@ export async function POST(request: Request) {
 
     data.queue.push({
       date: body.date,
-      type: body.type,
+      type: body.type.trim(),
       status: "scheduled",
-      title: body.title,
+      title: body.title.trim(),
     });
 
     data.queue.sort(
@@ -42,13 +75,18 @@ export async function POST(request: Request) {
         new Date(b.date).getTime()
     );
 
-    await fs.writeFile(file, dump(data));
+    await fs.writeFile(
+      file,
+      dump(data)
+    );
 
     return NextResponse.json({
       success: true,
     });
   } catch (error) {
-    if (error instanceof AuthenticationRequiredError) {
+    if (
+      error instanceof AuthenticationRequiredError
+    ) {
       return NextResponse.json(
         {
           success: false,
@@ -58,17 +96,23 @@ export async function POST(request: Request) {
       );
     }
 
-    if (error instanceof PermissionDeniedError) {
+    if (
+      error instanceof PermissionDeniedError
+    ) {
       return NextResponse.json(
         {
           success: false,
-          error: "You do not have permission to manage assignments.",
+          error:
+            "You do not have permission to manage assignments.",
         },
         { status: 403 }
       );
     }
 
-    console.error("Failed to add scheduler item:", error);
+    console.error(
+      "Failed to add scheduler item:",
+      error
+    );
 
     return NextResponse.json(
       {

@@ -1,0 +1,22 @@
+status: review
+collection: bioRxiv Bioinformatics
+title: 'EM3DFold: accurate de novo protein and nucleic acid model building for cryo-EM
+  maps using language model-powered deep learning'
+link: https://www.biorxiv.org/content/10.64898/2026.09.16.752067v1?rss=1
+published: null
+type: preprint
+emv_id: null
+priority: medium
+score: 40
+recommended_collection: TNEW
+profile_matches:
+- name: Tool Intelligence
+  score: 40
+matched_terms:
+- term: deep learning
+  score: 40
+  profiles:
+  - Tool Intelligence
+founder_decision: pending
+summary: null
+why_it_matters: null

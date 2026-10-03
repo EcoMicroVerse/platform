@@ -1,0 +1,27 @@
+status: approved
+collection: bioRxiv Bioinformatics
+title: 'DeepVir: A reproducible workflow for large-scale viral dark matter discovery'
+link: https://www.biorxiv.org/content/10.64898/2026.09.15.751837v1?rss=1
+published: null
+type: preprint
+emv_id: EMV-TPHAGE2609-0002
+priority: high
+score: 100
+recommended_collection: TPHAGE
+profile_matches:
+- name: Phage Core
+  score: 60
+- name: Tool Intelligence
+  score: 40
+matched_terms:
+- term: viral dark matter
+  score: 60
+  profiles:
+  - Phage Core
+- term: workflow
+  score: 40
+  profiles:
+  - Tool Intelligence
+founder_decision: approve
+summary: null
+why_it_matters: null

@@ -1,0 +1,22 @@
+paper: EMV-GENERAL2609-0003
+search_terms:
+- QBayMic
+- Quantum-coupled
+- variational
+- Bayes
+- clustering
+- feature
+- selection
+- low-signal
+- microbiome
+- data
+citation_trail:
+  landmark: null
+  current: 'QBayMic: Quantum-coupled variational Bayes for clustering and feature
+    selection in low-signal microbiome data'
+  follow_up: null
+family_tree:
+  parents: []
+  siblings: []
+  children: []
+recommended: []

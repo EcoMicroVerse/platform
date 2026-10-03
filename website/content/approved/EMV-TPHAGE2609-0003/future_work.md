@@ -1,0 +1,1 @@
+Further studies could investigate PPC performance across different bacterial pathogens and infection settings, as well as the mechanisms governing phage release following platelet activation. Evaluation of long-term safety, pharmacokinetics, therapeutic dosing, and translation to clinical applications would also be important.
